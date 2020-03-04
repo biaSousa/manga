@@ -1,0 +1,27 @@
+{
+    "name": "philipebarra/metaphone",
+    "description": "Implmentação do algoritimo metaphone em Português Brasil",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Philipe Barra",
+            "email": "philipebarra@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "PhilipeBarra\\Metaphone\\": "src/"
+        }
+    },
+    "prefer-stable": true,
+    "extra": {
+        "laravel": {
+            "providers": [
+                "PhilipeBarra\\Metaphone\\MetaphoneServiceProvider"
+            ]
+        }
+    }
+}

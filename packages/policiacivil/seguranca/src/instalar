@@ -1,0 +1,182 @@
+<?php
+
+require_once 'arquivos_instalacao/Arquivo';
+
+$oAppConfigOriginal = new Arquivo(__DIR__."/../../../../config/app.php");
+$oArquivoNovoTexto = new Arquivo('arquivos_instalacao/app');
+
+$oAppConfigOriginal->substituir('\],', $oArquivoNovoTexto);
+
+//$aTrechoNovo = file_get_contents('arquivos_instalacao/app');
+
+// die(file_get_contents(__DIR__."/../../../../config/app.php"));
+
+print_r($oAppConfigOriginal->__toString());die;
+/*
+ * Edição de arquivos
+ */
+editarConfigApp();
+editarConfigAuth();
+editarRouteServiceProvider();
+//editarConfigDatabase();
+editarArquivoEnv();
+//editarKernel();
+
+/*
+ * Criação de Arquivos
+ */
+copy('app/Http/Kernel.php', base_path('app/Http/Kernel.php'));
+copy('config/database.php', base_path('config/database.php'));
+copy('routes/web.php', base_path('routes/web.php'));
+
+/*
+ * Exclusão de arquivos
+ */
+
+function editarConfigApp()
+{
+    //configurando Provider do Segurança, fuso horário, locale
+    $novoCodigo = gerarNovoCodigo(base_path('config/app.php'), '\],', 'config/app.php', -1);
+    $novoCodigo = atualizarCodigo($novoCodigo, '\'timezone\' => \'UTC\',', 'config/app2.php', 0, false);
+    $novoCodigo = atualizarCodigo($novoCodigo, '\'locale\' => \'en\',', 'config/app3.php', 0, false);
+    criarArquivo(base_path('config/app.php'), $novoCodigo);
+}
+
+function editarConfigAuth()
+{
+    $novoCodigo = gerarNovoCodigo(base_path('config/auth.php'), 'App\\\User::class,', 'config/auth.php', 0, false);
+    criarArquivo(base_path('config/auth.php'), $novoCodigo);
+}
+
+function editarRouteServiceProvider()
+{
+    $novoCodigo = gerarNovoCodigo(base_path('app/Providers/RouteServiceProvider.php'), '\$this->mapWebRoutes\(\);', 'Providers/RouteServiceProvider1', 0, false);
+    $novoCodigo = atualizarCodigo($novoCodigo, null, 'Providers/RouteServiceProvider2', -2, false);
+    criarArquivo(base_path('app/Providers/RouteServiceProvider.php'), $novoCodigo);
+}
+
+//function editarConfigDatabase()
+//{
+//    $novoCodigo = gerarNovoCodigo(base_path('config/database.php'), '\'pgsql\' => \[', 'config/database.php', 0, false);
+//    $novoCodigo = atualizarCodigo($novoCodigo, '\'default\' => env\(\'DB_CONNECTION\', \'mysql\'\),', 'config/database2.php', 0, false);
+//    $novoCodigo = atualizarCodigo($novoCodigo, '\'schema\' => \'public\',', 'config/database3.php', 0, false);
+//
+//    criarArquivo(base_path('config/database.php'), $novoCodigo);
+//}
+
+//function editarKernel()
+//{
+//    $novoCodigo = gerarNovoCodigo(base_path('app/Http/Kernel.php'), '\'api\' => \[', "app/Http/Kernel.php", 0, false);
+//    criarArquivo(base_path('app/Http/Kernel.php'), $novoCodigo);
+//}
+
+function editarArquivoEnv()
+{
+    $aLinhasArquivoApp = explode(PHP_EOL, file_get_contents(base_path('.env')));
+    //apagando linhas de conexao padrao
+    $localInsercao = procurarLocalInsercao($aLinhasArquivoApp, 'DB_CONNECTION=mysql');
+    unset($aLinhasArquivoApp[$localInsercao]);
+    unset($aLinhasArquivoApp[++$localInsercao]);
+    unset($aLinhasArquivoApp[++$localInsercao]);
+    unset($aLinhasArquivoApp[++$localInsercao]);
+    unset($aLinhasArquivoApp[++$localInsercao]);
+
+    $localInsercao = procurarLocalInsercao($aLinhasArquivoApp, 'DB_PASSWORD=secret');
+    $aTrechoNovo = explode(PHP_EOL, file_get_contents(".env"));//codigo a injetar
+    $novoCodigo = injetarCodigo($localInsercao, $aTrechoNovo, $aLinhasArquivoApp, false);
+
+    criarArquivo(base_path('.env'), $novoCodigo);
+}
+
+
+function gerarNovoCodigo($arquivoOriginal, $textoParaSubstituir, $arquivoModeloNovo, $correcaoPosicao = 0, $linhaEmBrancoNoFinal = true)
+{
+    $aLinhasArquivoApp = linhas($arquivoOriginal);
+    $localInsercao = procurarLocalInsercao($aLinhasArquivoApp, $textoParaSubstituir);
+    $aTrechoNovo = file_get_contents($arquivoModeloNovo);
+    return injetarCodigo($localInsercao +($correcaoPosicao), $aTrechoNovo, $aLinhasArquivoApp, $linhaEmBrancoNoFinal);
+}
+
+function atualizarCodigo($novoCodigo, $textoParaSubstituir, $arquivoModeloNovo, $correcaoPosicao = 0, $linhaEmBrancoNoFinal)
+{
+    if($textoParaSubstituir !== null)
+        $localInsercao = procurarLocalInsercao($novoCodigo, $textoParaSubstituir);
+    else
+        $localInsercao = count($novoCodigo);
+
+    $aTrechoNovo = file_get_contents($arquivoModeloNovo);
+    return injetarCodigo($localInsercao +($correcaoPosicao), $aTrechoNovo, $novoCodigo, $linhaEmBrancoNoFinal);
+}
+
+//a penultima linha por padrão está vazia
+function injetarCodigo($linha, $trechoNovo, $codigoCompleto, $inserirLinhaEmBranco = true)
+{
+    $aNovoCodigo = [];
+    //for($i = 0; $i < count($codigoCompleto); $i++) {
+    foreach($codigoCompleto as $i => $l) {
+        if($i === $linha) {//se for o local que deve receber novo código
+            if(is_array($trechoNovo)) {//se for um array de trecho de código
+                foreach ($trechoNovo as $value) {
+                    $aNovoCodigo[] = $value;
+                }
+            } else {
+                $aNovoCodigo[] = $trechoNovo;
+            }
+            if($inserirLinhaEmBranco) {//inserindo linha em branco depois do código injetado
+                $aNovoCodigo[] = "";
+            }
+        } else {//senão repete o código que já existe
+            $aNovoCodigo[] = $codigoCompleto[$i];
+        }
+    }
+    return $aNovoCodigo;
+}
+
+function novoTrecho($arquivo)
+{
+    return file_get_contents('instalacao/'.$arquivo);
+}
+
+function linhas($arquivo)
+{
+    return explode(PHP_EOL, file_get_contents("$arquivo"));
+}
+
+function procurarLocalInsercao($aLinhasArquivoApp, $textoRegex)
+{
+    $local = null;
+    foreach($aLinhasArquivoApp as $linha => $a) {
+        if(preg_match("/$textoRegex/", $a)) {//entrou no array aliases
+            $local = $linha;
+            break;
+        }
+    }
+    return $local;
+}
+
+function criarArquivo($nome, $conteudo) {
+
+    $conteudo = implode(PHP_EOL, $conteudo);
+    file_put_contents($nome, $conteudo);
+}
+
+function copy_dir($src,$dst) {
+    $dir = opendir($src);
+    @mkdir($dst);
+    while(false !== ( $file = readdir($dir)) ) {
+        if (( $file != '.' ) && ( $file != '..' )) {
+            if ( is_dir($src . '/' . $file) ) {
+                copy_dir($src . '/' . $file,$dst . '/' . $file);
+            }
+            else {
+                copy($src . '/' . $file,$dst . '/' . $file);
+            }
+        }
+    }
+    closedir($dir);
+}
+
+function base_path($nome)
+{
+    return "../../../$nome";
+}

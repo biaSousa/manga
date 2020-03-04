@@ -1,0 +1,10 @@
+version: '2'
+services:
+  webserver:
+    image: ubuntu:18.04_php_vim_oracle_xdebug_nodejs
+    ports:
+      - "80:80"
+    volumes:
+      - "/var/www:/var/www"
+    environment:
+      XDEBUG_CONFIG: remote_host=host.docker.internal
