@@ -91,19 +91,16 @@
                                 </select>
                         </div>
                         <div class="col-md-3 mr-5">
-                            <label for="status">Adicionar Unidade</label>
+                            <label for="status">Unidade</label>
                                 <select name="status" id="status" class="form-control">
                                     <option value="">Selecione...</option>
                                      
                                 </select>
                         </div>
                         <div class="col-md-2 mr-5">
-                            <label for="status">Esse Status é diferente</label>
+                            <label for="status">Status</label>
                                 <select name="status" id="status" class="form-control">
-                                    <option value="">Selecione...</option>
-                                    @foreach($status as $p)
-                                    <option value="{{$p->id}}">{{$p->nome}}</option>
-                                    @endforeach
+                                <option value="1">Ativo</option>
                                 </select>
                         </div>
                     </div>

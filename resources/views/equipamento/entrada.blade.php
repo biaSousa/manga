@@ -12,7 +12,7 @@
                             <div class="input-group">
                                 <!-- <input type="text" class="form-control" placeholder="Pesquisar...">
                                 <span class="input-group-btn">
-                                        <button type="button" class="btn btn-default"><i class="fa fa-search"></i></button>
+                                    <button type="button" class="btn btn-default"><i class="fa fa-search"></i></button>
                                 </span> -->
                             </div>
                         </div>
@@ -20,77 +20,80 @@
                             <!-- <label class="col-md-2 control-label">Cod.</label>
                             <div class="col-md-2">
                                 <input type="text" name="codigo" id="codigo" class="form-control" required> -->
-                            <!-- </div> -->
+                                <!-- </div> -->
+                            </div>
+                        </div>
+                    </div>
+               
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-md-2 mr-5">
+                            <label for="data_movimentacao">Data da Movimentação</label>
+                            <input type="date" id="data_movimentacao" name="data_movimentacao" class="form-control">
+                        </div>
+                        <div class="col-md-2 mr-5">
+                            <label for="num_movimentacao">Num. da Movimentação</label>
+                            <input type="text" id="num_movimentacao" name="num_movimentacao" class="form-control" placeholder="xxxxx-2020">
+                        </div>
+                        <div class="col-md-4 mr-5">
+                            <label for="unidade">Unidade de Origem</label>
+                                <select name="unidade" id="unidade" class="form-control">
+                                    <option value="">Selecione...</option>
+                                    @foreach($unidade as $p)
+                                    <option value="{{$p->id}}">{{$p->nome}}</option>
+                                    @endforeach
+                                </select>
                         </div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="form-group">
-                        <div class="col-md-3 mr-5">
-                        <label for="nome">Tipo de Equipamento</label>
-                            <select name="tipo" id="tipo" class="form-control">
-                                <option value="">Selecione...</option>
-                               
-                            </select>
-                        </div>
-                        <div class="col-md-3 mr-5">
-                            <label for="modelo">Modelo</label>
-                                <select name="modelo" id="modelo" class="form-control">
-                                    <option value="">SELECTION...</option>
+                    <div class="col-md-4 mr-5">
+                            <label for="tecnico">Tecnico Responsável Por Receber</label>
+                                <select name="tecnico" id="tecnico" class="form-control">
+                                    <option value="">Selecione...</option>
+                                    @foreach($tecnico as $p)
+                                    <option value="{{$p->id}}">{{$p->nome}}</option>
+                                    @endforeach
                                 </select>
                         </div>
-                        <div class="col-md-3 mr-5">
-                        <label for="email">Marca</label>
-                            <select name="marca" id="marca" class="form-control">
-                                <option value="">Selecione...</option>
-                            </select>
+                        <div class="col-md-4 mr-5">
+                            <label for="setor">Setor</label>
+                                    <select name="setor" id="setor" class="form-control">
+                                        <option value="">Selecione...</option>
+                                        @foreach($setor as $p)
+                                        <option value="{{$p->id}}">{{$p->nome}}</option>
+                                        @endforeach
+                                    </select>
                         </div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="form-group">
-                        <div class="col-md-3 mr-5">
-                            <label for="patrimonio">Patrimônio</label>
-                            <input type="patrimonio" id="patrimonio" name="patrimonio" class="form-control">
-                        </div>
-                        <div class="col-md-3 mr-5">
-                            <label for="numero">Numero de Série</label>
-                            <input type="numero" id="numero" name="numero" class="form-control">
-                        </div>
-                        <div class="col-md-3 mr-5">
-                            <label for="nota">Nota Fiscal</label>
-                            <input type="nota" id="nota" name="nota" class="form-control">
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="form-group">
-                        <div class="col-md-3 mr-5">
-                            <label for="data_compra">Data da Compra</label>
-                            <input type="date" class="form-control" id="data_compra" name="data_compra">
-                        </div>
-                        <div class="col-md-3 mr-5">
-                            <label for="garantia">Garantia</label>
-                                <select name="garantia" id="garantia" class="form-control">
-                                    <option value="">SELECTION...</option>
+                    <div class="col-md-4 mr-5">
+                            <label for="servidor">Servidor Responsável Por Entregar</label>
+                                <select name="servidor" id="servidor" class="form-control">
+                                    <option value="">Selecione...</option>
+                                    @foreach($servidor as $p)
+                                    <option value="{{$p->id}}">{{$p->nome}}</option>
+                                    @endforeach
                                 </select>
                         </div>
                         <div class="col-md-3 mr-5">
-                            <label for="status">Status</label>
-                                <select name="status" id="status" class="form-control">
-                                    <option value="">SELECTION...</option>
-                                </select>
+                            <label for="telefone">Telefone</label>
+                            <input type="phone" id="telefone" name="telefone" class="form-control" placeholder="(xx) xxxxx-xxxx">
                         </div>
                     </div>
                 </div>
+                colocar grid
                 <div class="row">
                     <div class="form-group">
                         <div class="col-md-3 mr-8">
-                            <textarea id="descricao" rows="8" cols="111" placeholder="Descreva a observação..."></textarea>
+                            <textarea id="descricao" rows="8" cols="90" placeholder="Descreva a observação..."></textarea>
                         </div>
                     </div>
                 </div>
-                    <!-- BOTÃO ADICIONAR -->
+                <!-- BOTÃO ADICIONAR -->
                 <div class="row">
                     <div class="form-group">
                         <div class="col-md-1 mr-5">
@@ -122,8 +125,8 @@
 <script src="{{asset('js/app/views/MensagemView.js')}}"></script>
 <script src="{{asset('js/app/models/ValidaForm.js')}}"></script>
 <script src="{{asset('js/app/helpers/GenericModalForm.js')}}"></script>
-<script src="{{asset('js/app/controllers/EquipamentoController.js')}}"></script>
+<script src="{{asset('js/app/controllers/EqntradaController.js')}}"></script>
 <script>
-    var oController = new EquipamentoController();
+    var oController = new EntradaController();
 </script>
 @endsection

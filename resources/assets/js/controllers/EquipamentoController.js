@@ -1,4 +1,4 @@
-class BiancaController {
+class EquipamentoController {
     
     constructor() {
         this._form = document.getElementById('form');
@@ -69,7 +69,7 @@ class BiancaController {
                              .removeClass('alert-success')
                              .fadeIn();
                 }else {
-                    this.carregaGrid();
+                    // this.carregaGrid();
 
                     $('#msg').html(resp.msg)
                              .addClass('alert-success')

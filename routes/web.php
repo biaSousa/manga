@@ -9,14 +9,13 @@
 */
 
 //Novo Equipamento
-Route::get('/', 'EquipamentoController@index');
-Route::get('/equipamento/saida',   'EquipamentoController@saida');
-Route::get('/equipamento/entrada', 'EquipamentoController@entrada');
-Route::get('/participante/create', 'EquipamentoController@create');
-Route::post('/participante/store', 'EquipamentoController@store');
+Route::get('/equipamento/novo',   'EquipamentoController@novoEquipamento');
+Route::get('/equipamento/index2', 'EquipamentoController@index2');
+Route::post('/equipamento/store', 'EquipamentoController@createEquipamento');
+Route::get('/equipamento/saida',  'EquipamentoController@saida');
 
 //Entrega de Equipamento
-Route::get('/evento', 'EquipamentoController@evento');
+Route::get('/equipamento/entrada', 'EquipamentoController@entrada');
 Route::get('/evento/salva-evento', 'EquipamentoController@salvaEvento');
 
 //Recebimento de Equipamento

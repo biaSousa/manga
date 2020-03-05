@@ -205,7 +205,8 @@
         <!-- Collection of nav links, forms, and other content for toggling -->
         <div id="navbarCollapse" class="collapse navbar-collapse justify-content-start">
             <ul class="nav navbar-nav">
-                <li class="nav-item"><a href="#" class="nav-link">Inicio</a></li>
+                <li class="nav-item"><a href="/app-laravel/public/equipamento/index2" class="nav-link">novo antigo</a></li>
+                <li class="nav-item"><a href="/app-laravel/public/equipamento/novo" class="nav-link">novo novo</a></li>
                 <li class="nav-item dropdown">
                     <a data-toggle="dropdown" class="nav-link dropdown-toggle" href="#">Movimentação<b class="caret"></b></a>
                     <ul class="dropdown-menu">
@@ -213,7 +214,6 @@
                         <li><a href="/app-laravel/public/equipamento/saida" class="dropdown-item">Saída de Equipamento</a></li>
                     </ul>
                 </li>
-                <li><a href="/app-laravel/public/" class="nav-link">Novo Equipamento</a></li>
             </ul>
             <form class="navbar-form form-inline search-form">
                 <div class="input-group">
@@ -223,7 +223,6 @@
                     </span>
                 </div>
             </form>
-            
             <ul class="nav navbar-nav navbar-right ml-auto">
                 <li class="nav-item active" class="nav-item dropdown">
                     <a data-toggle="dropdown" class="nav-link dropdown-toggle" href="#"><i class="fa fa-user-o"></i> Login</a>
