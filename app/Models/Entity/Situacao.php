@@ -4,8 +4,8 @@ namespace App\Models\Entity;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Status extends Model
+class Situacao extends Model
 {
-    protected $table = 'status';
+    protected $table = 'situacao';
     protected $guarded = [];
 }

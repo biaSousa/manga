@@ -28,44 +28,32 @@
                 </div>
                 <div class="row">
                     <div class="form-group">
-                    <div class="col-md-2 mr-5">
-                            <label for="data_compra">Data da Compra</label>
-                            <input type="date" class="form-control" id="data_compra" name="data_compra">
-                        </div> 
-                    </div> 
-                </div> 
-                <div class="row">
-                    <div class="form-group">
                         <div class="col-md-3 mr-5">
                             <label for="nome">Tipo de Equipamento</label>
-                                <select name="tipo" id="tipo" class="form-control">
+                                <select name="tipo" id="tipo" class="form-control" required>
                                     <option value="">Selecione...</option>
                                     @foreach($tipo as $p)
                                     <option value="{{$p->id}}">{{$p->nome}}</option>
                                     @endforeach
                                 </select>
                         </div>
-                        <div class="col-md-3 mr-5">
-                            <label for="status">Status</label>
-                                <select name="status" id="status" class="form-control">
-                                    <option value="1">Ativo</option>
-                                </select>
-                        </div>
+                        <div class="col-md-2 mr-5">
+                            <label for="data_compra">Data da Compra</label>
+                            <input type="date" class="form-control" id="data_compra" name="data_compra" required>
+                        </div> 
                         <div class="col-md-3 mr-5">
                             <label for="patrimonio">Patrimônio</label>
                             <input type="text" id="patrimonio" name="patrimonio" class="form-control" list="patrimonios"  placeholder="xxxxxx-xxxxxx">
                             <datalist id= "patrimonios">
-            
                             </datalist>
                         </div> 
-                        
                     </div>
                 </div>
                 <div class="row">
                     <div class="form-group">
                         <div class="col-md-3 mr-5">
                             <label for="email">Marca</label>
-                                <select name="marca" id="marca" class="form-control">
+                                <select name="marca" id="marca" class="form-control" required>
                                     <option value="">Selecione...</option>
                                     @foreach($marca as $p)
                                     <option value="{{$p->id}}">{{$p->nome}}</option>
@@ -83,7 +71,7 @@
                         </div>
                         <div class="col-md-3 mr-5">
                             <label for="num_serie">Num. de Série</label>
-                            <input type="text" id="num_serie" name="num_serie" class="form-control" placeholder="xxxxxx-xxxxxx">
+                            <input type="text" id="num_serie" name="num_serie" class="form-control" placeholder="xxxxxx-xxxxxx" required>
                         </div>
                     </div>
                 </div>
@@ -91,7 +79,7 @@
                     <div class="form-group">
                         <div class="col-md-3 mr-5">
                             <label for="modelo">Modelo</label>
-                                <select name="modelo" id="modelo" class="form-control">
+                                <select name="modelo" id="modelo" class="form-control" required>
                                     <option value="">Selecione...</option>
                                     @foreach($modelo as $p)
                                     <option value="{{$p->id}}">{{$p->nome}}</option>
@@ -100,7 +88,7 @@
                         </div>
                           <div class="col-md-3 mr-5">
                             <label for="unidade">Unidade</label>
-                                <select name="unidade" id="unidade" class="form-control">
+                                <select name="unidade" id="unidade" class="form-control" required>
                                     <option value="">Selecione...</option>
                                     @foreach($unidade as $p)
                                     <option value="{{$p->id}}">{{$p->nome}}</option>

@@ -8,18 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class TipoDB extends Model
 {
-    public static function getTipo()
-    {
-        return Tipo::orderBy('nome')->get(['id', 'nome']);
-    }
-
-    public static function getTiipo()
-    {
-        $sql = DB::table('tipo')
-            ->orderBy('nome', 'asc');
-
-        return $sql->get();
-    }
     public static function getTipoByuId($id)
     {
         $evento = DB::table('evento as e')

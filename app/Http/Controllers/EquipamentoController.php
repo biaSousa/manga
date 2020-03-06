@@ -13,12 +13,26 @@ use App\Models\Entity\Tecnico;
 use App\Models\Entity\Servidor;
 use App\Models\Entity\Garantia;
 use App\Models\Entity\Equipamento;
+use App\Models\Entity\Recebimento;
 use App\Models\Facade\EquipamentoDB;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 class EquipamentoController extends Controller
 {
+    public function index()
+    {        
+        
+        $tipo     = Tipo::all(['id', 'nome']);
+        $marca    = Marca::all(['id', 'nome']);
+        $modelo   = Modelo::all(['id', 'nome']);
+        $unidade  = Unidade::all(['id', 'nome']);
+        $garantia = Garantia::all(['id', 'nome']);
+        
+        return view('equipamento.index', compact('tipo', 'marca', 'modelo', 'unidade', 'garantia'));
+    }
+
     public function novoEquipamento()
     {        
         $tipo     = Tipo::all(['id', 'nome']);
@@ -29,34 +43,9 @@ class EquipamentoController extends Controller
         
         return view('equipamento.novo', compact('tipo', 'marca', 'modelo', 'unidade', 'garantia'));
     }
-    //Comparacao de telas
-    public function index2()
-    {        
-        
-        $tipo     = Tipo::all(['id', 'nome']);
-        $marca    = Marca::all(['id', 'nome']);
-        $modelo   = Modelo::all(['id', 'nome']);
-        $unidade  = Unidade::all(['id', 'nome']);
-        $garantia = Garantia::all(['id', 'nome']);
-        
-        return view('equipamento.index2', compact('tipo', 'marca', 'modelo', 'unidade', 'garantia'));
-    }
-    
-    public function entrada()
-    {        
-        $tipo     = Tipo::all(['id', 'nome']);
-        $marca    = Marca::all(['id', 'nome']);
-        $setor    = Setor::all(['id', 'nome']);
-        $modelo   = Modelo::all(['id', 'nome']);
-        $unidade  = Unidade::all(['id', 'nome']);
-        $tecnico  = Tecnico::all(['id', 'nome']);
-        $servidor = Servidor::all(['id', 'nome']);
-        
-        return view('equipamento.entrada', compact ( 'tipo', 'marca', 'setor', 'modelo', 'unidade', 'tecnico', 'servidor'));
-    }
 
     //salva novo equipamento 
-    public function createEquipamento(Request $request)
+    public function createNovoEquipamento(Request $request)
     {
         DB::beginTransaction();
         try{
@@ -64,13 +53,13 @@ class EquipamentoController extends Controller
             $oEquipamento = new Equipamento();
             $oEquipamento->status = 1;
             $oEquipamento->data_compra = date('Y-m-d H:i:s');
-            $oEquipamento->fk_tipo     = request('tipo', null);
-            $oEquipamento->fk_setor    = request('setor', null);
-            $oEquipamento->fk_marca    = request('marca', null);
-            $oEquipamento->fk_modelo   = request('modelo', null);
-            $oEquipamento->fk_unidade  = request('unidade', null);
+            $oEquipamento->fk_tipo     = request('tipo');
+            $oEquipamento->fk_setor    = request('setor');
+            $oEquipamento->fk_marca    = request('marca');
+            $oEquipamento->fk_modelo   = request('modelo');
+            $oEquipamento->fk_unidade  = request('unidade');
+            $oEquipamento->num_serie   = request('num_serie');
             $oEquipamento->fk_garantia = request('garantia', null);
-            $oEquipamento->num_serie   = request('num_serie', null);
             $oEquipamento->descricao   = request('descricao', null);
             $oEquipamento->patrimonio  = request('patrimonio', null);
             $oEquipamento->nota_fiscal = request('nota_fiscal', null);
@@ -88,18 +77,87 @@ class EquipamentoController extends Controller
         }
     }
 
-    public function saida()
+    public function equipamentoEntrada()
+    {        
+        $tipo     = Tipo::all(['id', 'nome']);
+        $marca    = Marca::all(['id', 'nome']);
+        $setor    = Setor::all(['id', 'nome']);
+        $modelo   = Modelo::all(['id', 'nome']);
+        $unidade  = Unidade::all(['id', 'nome']);
+        $tecnico  = Tecnico::all(['id', 'nome']);
+        $servidor = Servidor::all(['id', 'nome']);
+        
+        return view('equipamento.entrada', compact ( 'tipo', 'marca', 'setor', 'modelo', 'unidade', 'tecnico', 'servidor'));
+    }
+
+    public function gridEquipamentoEntrada()
+    {
+        $tipo   = request('tipo', null);
+        $status = request('status', null);
+        $modelo = request('modelo', null);
+        $data_movimentacao = request('data_movimentacao', null);
+        
+        return ['data' => EquipamentoDB::gridEntrada($patrimonio, $tipo, $modelo, $data_movimentacao)];
+        // return response()->json(UsuarioDB::grid($status));
+    } 
+
+    //manual
+    public function createEquipamentoEntrada(Request $request )
+    {
+        DB::beginTransaction();
+        try{
+            $oEntrada = new Recebimento();
+            $oEntrada->fk_setor    = request('setor');
+            $oEntrada->fk_unidade  = request('unidade');
+            $oEntrada->fk_tecnico  = request('tecnico');
+            $oEntrada->fk_servidor = request('servidor');
+            $oEntrada->telefone    = request('telefone');
+            $oEntrada->descricao   = request('descricao', null);
+            $oEntrada->data_movimentacao   = date('Y-m-d H:i:s');
+            $oEntrada->num_movimentacao    = request('num_movimentacao', null);
+            
+            $p = (object) $request->all();
+            // dd($request->all());
+
+            $oEntrada->save();
+
+            DB::commit();
+
+            return response()->json(array('msg' => 'Entrada cadastrada com sucesso.'));
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json(array('msg' => $e->getMessage()), 422);
+        }
+    }
+
+    //com updateorcreate
+    public function createEquipamentoEntradaaaa(Request $request)
+    {
+        Recebimento::updateOrCreate([
+            'about'     => $request->get('about'),
+            'setor'    => $setor,
+            'unidade'  => $unidade,
+            'tecnico'  => $tecnico,
+            'servidor' => $servidor,
+            'telefone' => $telefone,
+            'descricao'=> $descricao,
+            'num_movimentacao' => $num_movimentacao,
+            'data_movimentacao'=> $data_movimentacao
+        ]);
+        
+        dd($request->all());
+        $p = (object) $request->all();
+
+            DB::commit();
+
+            return response()->json(array('msg' => 'Entrada cadastrada com sucesso.'));
+       
+    }
+
+    public function equipamentoSaida()
     {        
         return view('equipamento.saida');
     }
-    
-    public function gridEquipamento(Request $request, $p)
-    {
-        $p = (object) $request->all();
-
-        return ['data' => EquipamentoDB::gridEquipamento($p)];
-    } 
-    
     public function salvaCurso(Request $request)
     {
         DB::beginTransaction();

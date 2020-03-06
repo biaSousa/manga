@@ -1,7 +1,7 @@
 @extends('layout.main')
 @section('conteudo')
 <section class="container-fluid">
-    <form id="form" class="form-horizontal" method="POST" action="{{url('entrada/store')}}" onsubmit="oController.salvar(event)">
+    <form id="form" class="form-horizontal" method="POST" action="{{url('equipamento/store_equipamento_entrada')}}" onsubmit="oController.salvar(event)">
         <h3>Entrada de Equipamento</h3>
         <div class="panel panel-default">
             <div class="panel-body col-md-offset-2">
@@ -24,7 +24,6 @@
                             </div>
                         </div>
                     </div>
-               
                 <div class="row">
                     <div class="form-group">
                         <div class="col-md-2 mr-5">
@@ -89,7 +88,7 @@
                 <div class="row">
                     <div class="form-group">
                         <div class="col-md-3 mr-8">
-                            <textarea id="descricao" rows="8" cols="90" placeholder="Descreva a observação..."></textarea>
+                            <textarea id="descricao" name="descricao" rows="8" cols="90" placeholder="Descreva a observação..."></textarea>
                         </div>
                     </div>
                 </div>
@@ -97,15 +96,13 @@
                 <div class="row">
                     <div class="form-group">
                         <div class="col-md-1 mr-5">
-                            <label class="col-md-2">&nbsp;</label>
                             <div class="col-mr-1">
-                                <button type="submit" onclick="oController.salvar()" class="btn btn-primary"><i class="glyphicon glyphicon-floppy-disk"></i> Salvar</button>
+                                <button type="submit" class="btn btn-primary"><i class="glyphicon glyphicon-floppy-disk"></i> Salvar</button>
                             </div>
                         </div>
                         <div class="col-md-1 mr-5">
-                            <label class="col-md-2">&nbsp;</label>
                             <div class="col-mr-1">
-                                <button type="reset" onclick="oController.salvar()" class="btn btn-primary">Limpar</button>
+                                <button type="reset" class="btn btn-primary">Limpar</button>
                             </div>
                         </div>
                     </div>
@@ -125,7 +122,7 @@
 <script src="{{asset('js/app/views/MensagemView.js')}}"></script>
 <script src="{{asset('js/app/models/ValidaForm.js')}}"></script>
 <script src="{{asset('js/app/helpers/GenericModalForm.js')}}"></script>
-<script src="{{asset('js/app/controllers/EqntradaController.js')}}"></script>
+<script src="{{asset('js/app/controllers/EntradaController.js')}}"></script>
 <script>
     var oController = new EntradaController();
 </script>
