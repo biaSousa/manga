@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class EquipamentoDB extends Model
 {
+    //index.blade.php
     public static function gridPesquisa()
     {
         $db = DB::table('recebimento as re')
@@ -41,18 +42,14 @@ class EquipamentoDB extends Model
         }
 
         $aDataTables = Paginacao::dataTables($db, true);
-        
-        for($data_movimentacao >= $date ){
-            
-        }
 
         return $aDataTables;
     }
      
-
+    //entrada.blade.php
     public static function gridEntrada()
     {
-        $entrada = DB::table('equipamento as e')
+        $sql = DB::table('equipamento as e')
             ->join('tipo as t', 'e.fk_tipo', '=', 't.id')
             ->join('marca as ma', 'e.fk_marca', '=', 'ma.id')
             ->join('modelo as mo', 'e.fk_modelo', '=', 'mo.id')
@@ -62,20 +59,20 @@ class EquipamentoDB extends Model
             ->orderBy('e.id')
             ->get();
 
-        return $entrada;
+        return $sql;
     }
     
-    public static function getEventoByResp($id)
-    {
-        $evento = DB::table('fontes_conta as fc')
-            ->join('tipo_evento as te', 'e.fk_tipo_evento', '=', 'te.id')
-            ->join('tipo_curso as tc', 'e.fk_tipo_curso', '=', 'tc.id')
-            ->join('realizadores as r', 'fc.fk_realizadores', '=', 'r.id')
-            ->where('e.fk_tipo_evento', $id)
-            ->select(['r.nome'])
-            ->orderBy('r.nome')
-            ->get();
+    // public static function getEventoByResp($id)
+    // {
+    //     $evento = DB::table('fontes_conta as fc')
+    //         ->join('tipo_evento as te', 'e.fk_tipo_evento', '=', 'te.id')
+    //         ->join('tipo_curso as tc', 'e.fk_tipo_curso', '=', 'tc.id')
+    //         ->join('realizadores as r', 'fc.fk_realizadores', '=', 'r.id')
+    //         ->where('e.fk_tipo_evento', $id)
+    //         ->select(['r.nome'])
+    //         ->orderBy('r.nome')
+    //         ->get();
 
-        return $evento;
-    }
+    //     return $evento;
+    // }
 }

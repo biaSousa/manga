@@ -15,6 +15,7 @@ use App\Models\Entity\Garantia;
 use App\Models\Entity\Equipamento;
 use App\Models\Entity\Recebimento;
 use App\Models\Facade\EquipamentoDB;
+use App\Models\Facade\EquipamentoFiltrosDB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
@@ -33,15 +34,18 @@ class EquipamentoController extends Controller
         return view('equipamento.index', compact('tipo', 'marca', 'modelo', 'unidade', 'garantia'));
     }
 
-    public function novoEquipamento()
+    public function novoEquipamento(Request $p)
     {        
         $tipo     = Tipo::all(['id', 'nome']);
         $marca    = Marca::all(['id', 'nome']);
         $modelo   = Modelo::all(['id', 'nome']);
         $unidade  = Unidade::all(['id', 'nome']);
         $garantia = Garantia::all(['id', 'nome']);
+
+        //filtro
+        $patrimonio = EquipamentoFiltrosDB::filtroPatrimonioDadosNovoEquipamento($p);
         
-        return view('equipamento.novo', compact('tipo', 'marca', 'modelo', 'unidade', 'garantia'));
+        return view('equipamento.novo', compact('tipo', 'marca', 'modelo', 'unidade', 'garantia', 'patrimonio'));
     }
 
     //salva novo equipamento 
@@ -54,7 +58,6 @@ class EquipamentoController extends Controller
             $oEquipamento->status = 1;
             $oEquipamento->data_compra = date('Y-m-d H:i:s');
             $oEquipamento->fk_tipo     = request('tipo');
-            $oEquipamento->fk_setor    = request('setor');
             $oEquipamento->fk_marca    = request('marca');
             $oEquipamento->fk_modelo   = request('modelo');
             $oEquipamento->fk_unidade  = request('unidade');
@@ -97,6 +100,7 @@ class EquipamentoController extends Controller
         $modelo = request('modelo', null);
         $data_movimentacao = request('data_movimentacao', null);
         
+        //filtro de patrimonio/num_serie tras dados do codigo de barras 
         return ['data' => EquipamentoDB::gridEntrada($patrimonio, $tipo, $modelo, $data_movimentacao)];
         // return response()->json(UsuarioDB::grid($status));
     } 
@@ -113,8 +117,8 @@ class EquipamentoController extends Controller
             $oEntrada->fk_servidor = request('servidor');
             $oEntrada->telefone    = request('telefone');
             $oEntrada->descricao   = request('descricao', null);
-            $oEntrada->data_movimentacao   = date('Y-m-d H:i:s');
-            $oEntrada->num_movimentacao    = request('num_movimentacao', null);
+            $oEntrada->data_movimentacao = date('Y-m-d H:i:s');
+            $oEntrada->num_movimentacao  = request('num_movimentacao', null);
             
             $p = (object) $request->all();
             // dd($request->all());
@@ -134,7 +138,7 @@ class EquipamentoController extends Controller
     public function createEquipamentoEntradaaaa(Request $request)
     {
         Recebimento::updateOrCreate([
-            'about'     => $request->get('about'),
+            'about'    => $request->get('about'),
             'setor'    => $setor,
             'unidade'  => $unidade,
             'tecnico'  => $tecnico,
@@ -158,6 +162,7 @@ class EquipamentoController extends Controller
     {        
         return view('equipamento.saida');
     }
+
     public function salvaCurso(Request $request)
     {
         DB::beginTransaction();
@@ -186,16 +191,4 @@ class EquipamentoController extends Controller
             return reponse()->json(['retorno' => 'erro', 'msg' => 'Algo inesperado ocorreu. <br>' . $e->getMessage(), 500]);
         }
     }   
-
-    // public function getTipo()
-    // {
-    //     $pessoa = TipoPessoa::all();
-    //     $newPessoa = [];
-
-    //     foreach ($pessoa as $b) {
-    //         $newPessoa[$b->id] = $b->nome;
-    //     }
-    //     return response()->json($newPessoa);
-    // }
-
 }

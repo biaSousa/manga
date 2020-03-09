@@ -4,7 +4,6 @@
     <form id="form" class="form-horizontal" method="POST" action="{{url('equipamento/search')}}" onclick="oController.pesquisar(event)">
     <input type="hidden" name="codigo" id="codigo" class="form-control" required>
         <h3>Pesquisa</h3>
-        <p>Adicionar filtros bianca</p> 
         <div class="panel panel-default">
             <div class="panel-body col-md-offset-2">
                 {{csrf_field()}}
@@ -23,6 +22,7 @@
                             </div>
                         </div>
                     </div> -->
+                <p>Adicionar filtros bianca</p> 
                 </div>
                 <div class="row">
                     <div class="form-group">

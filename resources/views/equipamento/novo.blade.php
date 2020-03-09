@@ -1,7 +1,7 @@
 @extends('layout.main')
 @section('conteudo')
 <section class="container-fluid">
-    <form id="form" class="form-horizontal" method="POST" action="{{url('equipamento/store')}}" onsubmit="oController.salvar(event)">
+    <form id="form" class="form-horizontal" method="POST" action="{{url('equipamento/store')}}" onsubmit="oController.salvar(e)">
         <h3>Novo Equipamento</h3>
         <div class="panel panel-default">
             <div class="panel-body col-md-offset-2">
@@ -36,23 +36,22 @@
                                     <option value="{{$p->id}}">{{$p->nome}}</option>
                                     @endforeach
                                 </select>
-                        </div>
-                        <div class="col-md-2 mr-5">
-                            <label for="data_compra">Data da Compra</label>
-                            <input type="date" class="form-control" id="data_compra" name="data_compra" required>
                         </div> 
                         <div class="col-md-3 mr-5">
                             <label for="patrimonio">Patrimônio</label>
-                            <input type="text" id="patrimonio" name="patrimonio" class="form-control" list="patrimonios"  placeholder="xxxxxx-xxxxxx">
-                            <datalist id= "patrimonios">
-                            </datalist>
+                            <input type="text" id="patrimonio" name="patrimonio" class="form-control" placeholder="xxxxxx-xxxxxx" onkeypress="oController.eventoEnter()">
+                         
                         </div> 
+                        <div class="col-md-2 mr-5">
+                            <label for="data_compra">Data da Compra</label>
+                            <input type="date" class="form-control" id="data_compra" name="data_compra" required>
+                        </div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="form-group">
                         <div class="col-md-3 mr-5">
-                            <label for="email">Marca</label>
+                            <label for="marca">Marca</label>
                                 <select name="marca" id="marca" class="form-control" required>
                                     <option value="">Selecione...</option>
                                     @foreach($marca as $p)
@@ -114,21 +113,69 @@
                         <div class="col-md-20 mr-5">
                             <label class="col-md-2">&nbsp;</label>
                             <div>
-                                <button type="submit" class="btn btn-primary"><i class="glyphicon glyphicon-floppy-disk"></i> Salvar</button>
+                                <button type="submit" class="btn btn-primary"><i class="glyphicon glyphicon-plus"></i> Adicionar</button>
                                 <button type="reset" class="btn btn-primary">Limpar</button>
                             </div>
                         </div>
-                        <!-- <div class="col-md-1 mr-5">
-                            <label class="col-md-2">&nbsp;</label>
-                            <div class="col-mr-1">
-                                <button type="reset" onclick="oController.salvar()" class="btn btn-primary">Limpar</button>
-                            </div>
-                        </div> -->
+                     </div>
+                </div>
+                <!-- Button trigger modal -->
+                <!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+                Launch demo modal
+                </button> -->
+
+                <!-- Modal -->
+                <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        ...
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Save changes</button>
+                    </div>
                     </div>
                 </div>
+                </div>
+
+            </div>
+        </div> 
+        <div class="row">
+            <div class="form-group">
+             <div class="col-md-5 content-end mr-5">
+                <div class="btn-group btn-group-sm" role="group">
+                    <button id="novo" type="button" class="btn btn-secondary" onclick="oController.criar(this)" data-url="{{ url('') }}" title="Criar novo" data-toggle="tooltip" data-placement="top">
+                        <i class="material-icons icone">add</i>
+                    </button>
+                    <button id="editar" type="button" class="btn btn-secondary" onclick="oController.editar(this)" data-url="{{ url('') }}" title="Edita" data-toggle="tooltip" data-placement="top">
+                        <i class="material-icons icone">edit</i>
+                    </button>
+                </div>
+            </div>
             </div>
         </div>
-    </form>
+        <table id="grid" class="table table-striped table-bordered mb-3">
+        <thead>
+            <tr>
+                <th width="3%">ID</th>
+                <th width="8%">Tipo</th>
+                <th width="8%">Modelo</th>
+                <th width="8%">Marca</th>
+                <th width="5%">Num. Série</th>
+                <th width="5%">Patrimonio</th>
+            </tr> 
+            </thead> 
+            <tbody>
+            </tbody>
+        </table>
+</form>
 </section>
 
 @endsection
@@ -142,6 +189,7 @@
 <script src="{{asset('js/app/models/ValidaForm.js')}}"></script>
 <script src="{{asset('js/app/helpers/GenericModalForm.js')}}"></script>
 <script src="{{asset('js/app/controllers/EquipamentoController.js')}}"></script>
+@include('layout.datatables', ['carregamento_inicial' => true, 'colunas' => ['id', 'tipo', 'modelo', 'marca', 'num_serie', 'patrimonio']])
 <script>
     var oController = new EquipamentoController();
 </script>

@@ -2,16 +2,6 @@ class EquipamentoController {
     
     constructor() {
         this._form = document.getElementById('form');
-        this._tipo = document.getElementById('tipo');
-        this._marca = document.getElementById('marca');
-        this._modelo = document.getElementById('modelo');
-        this._unidade = document.getElementById('unidade');
-        this._garantia = document.getElementById('garantia');
-        this._descricao = document.getElementById('decricao');
-        this._patrimonio = document.getElementById('patrimonio');
-        this._datacompra = document.getElementById('data_compra');
-        this._notafiscal = document.getElementById('nota_fiscal');
-
         this._formGrid = document.getElementById('formulario');
         this._token = document.querySelector('input[name="_token"]');
         this._table = document.querySelector('#grid tbody');
@@ -19,77 +9,14 @@ class EquipamentoController {
         this.carregaGrid();
     }
 
-    //by patrimonio/num_serie show dados do equipamento
-    eventoEnter(event) {
-        if(event.key === 'Enter') {
-            this.carregaPatrimonio();
-        }
+    pesquisar(e) {
+        e.preventDefault();
+        oTable.draw();
+    }  
+
+    criar() {
+        window.location = `${BASE_URL}equipamento/novo`;
     }
-
-    carregaPatrimonio()
-    {
-        this._tipo.value = '';
-        this._marca.value = '';
-        this._modelo.value = '';
-        this._unidade.value = '';
-        this._garantia.value = '';
-        this._descricao.value = '';
-        this._datacompra.value = '';
-        this._notafiscal.value = '';
-
-        Ajax.ajax({
-            url: this._patrimonio.dataset.url,
-            data: {patrimonio: this._patrimonio.value},
-            success: (e) => {
-                if(e.id) {
-                    // this._email.disabled = true;
-                    // this._senha.disabled = true;
-                    // this._senhaConfirmation.disabled = true;
-
-                    $('#msg-info').html(`Equipamento <b>${e.patrimonio}</b> carregado.`).removeClass('d-none');
-                }
-
-                this._tipo.value = e.fk_tipo;
-                this._marca.value = e.fk_marca;
-                this._modelo.value = e.fk_modelo;
-                this._unidade.value = e.fk_unidade;
-                this._garantia.value = e.fk_garantia;
-                this._descricao.value = e.descricao;
-                this._datacompra.value = e.data_compra;
-                this._notafiscal.value = e.nota_fiscal;
-            },
-            method: 'POST',
-            error: (e) => {
-                if(e.url) {
-                    window.location = e.url;
-                    return false;
-                }
-
-                $('#snackbar').html(e.message)
-                            .addClass('alert')
-                            .addClass('alert-danger')
-                            .fadeIn();
-            }
-        });
-    }
-
-    // adicionarEquipamento() {
-    //     if (!this._perfil.value) return;
-
-    //     if (this._grid.querySelectorAll(`tbody tr[id="${this._perfil.value}"]`).length > 0) {
-    //         return false;
-    //     }
-
-    //     oTable.row.add({
-    //         'DT_RowId': this._perfil.value,
-    //         'perfil': this._perfil.options[this._perfil.selectedIndex].text + '<input type="hidden" value="' + this._perfil.value + '" name="perfil[]">'
-    //     }).draw();
-    // }
-
-    // removerPerfil() {
-    //     oTable.rows('.selected').remove().draw();
-    // }
-
     carregaGrid() {        
         $.ajax({
             type: 'GET',
@@ -122,34 +49,14 @@ class EquipamentoController {
             }
         });
     }
-    
-    //novo salvar
-    salvar(e) {
-        e.preventDefault();
-        Ajax.ajax({
-            url: this._form.action,
-            data: this._form.serialize(),
-            method: 'post',
-            success: function (e) {
-                let snackbar = new Snackbar();
-                snackbar.exibirVerde(e.msg);
-            },
-            error: function (e) {
-                let snackbar = new Snackbar();
-                snackbar.exibirVermelho(e.msg);
-                $('#snackbar').html(e.msg)
-                            .addClass('alert')
-                            .removeClass('alert-success')
-                            .addClass('alert-danger')
-                            .fadeIn()
-                            .delay(5000)
-                            .fadeOut();
-            }
-        });
+
+    eventoEnter(event) {
+        if(event.key === 'Enter') {
+            this.carregaGrid();
+        }
     }
-    
-    //antigo salvar
-    salvaaaar() {
+
+    salvar() {
         var oValida = new ValidaForm();
 
         if (!oValida.validaFormulario('#form')) {
@@ -183,6 +90,33 @@ class EquipamentoController {
                 }
             }
         });
+    }
+    
+    excluir(e) {
+        let linha = oTable.rows('.selected').data()[0];
+        
+        if (linha !== null) {
+            if (confirm('Deseja excluir este item?'))
+                        
+            Ajax.ajax({
+                url: `${e.dataset.url}/admin/usuario/excluir/`+[linha.id],
+                method: 'post',
+                data: {id: linha.id},
+                success: (response) => {
+                    alert(response.message);
+                    this._excluir = true;
+                    this._excluir.Tooltip.hide();
+                    oTable.draw();
+                },
+                error: (response) => {
+                    alert(response.message);
+                    this._excluir = false;
+                }
+            });
+        } else
+            alert('Selecione uma item para excluir');
+
+        return false;
     }
 
     remover(id) {

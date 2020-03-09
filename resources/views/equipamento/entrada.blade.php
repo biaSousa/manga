@@ -32,7 +32,7 @@
                         </div>
                         <div class="col-md-2 mr-5">
                             <label for="num_movimentacao">Num. da Movimentação</label>
-                            <input type="text" id="num_movimentacao" name="num_movimentacao" class="form-control" placeholder="xxxxx-2020">
+                            <input type="text" id="num_movimentacao" name="num_movimentacao" class="form-control" placeholder="xxxxxxxxx-2020">
                         </div>
                         <div class="col-md-4 mr-5">
                             <label for="unidade">Unidade de Origem</label>
@@ -58,12 +58,12 @@
                         </div>
                         <div class="col-md-4 mr-5">
                             <label for="setor">Setor</label>
-                                    <select name="setor" id="setor" class="form-control">
-                                        <option value="">Selecione...</option>
-                                        @foreach($setor as $p)
-                                        <option value="{{$p->id}}">{{$p->nome}}</option>
-                                        @endforeach
-                                    </select>
+                                <select name="setor" id="setor" class="form-control">
+                                    <option value="">Selecione...</option>
+                                    @foreach($setor as $p)
+                                    <option value="{{$p->id}}">{{$p->nome}}</option>
+                                    @endforeach
+                                </select>
                         </div>
                     </div>
                 </div>
@@ -84,7 +84,8 @@
                         </div>
                     </div>
                 </div>
-                colocar grid
+                adicionar grid<br>
+                adicionar modal
                 <div class="row">
                     <div class="form-group">
                         <div class="col-md-3 mr-8">
