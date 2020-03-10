@@ -93,7 +93,7 @@ class EquipamentoController {
     carregaGrid() {        
         $.ajax({
             type: 'GET',
-            url: BASE_URL+'equipamento/grid',
+            url: BASE_URL+'/equipamento/grid',
             data: this._formGrid.serialize(),
             dataType: 'json',
             success: (response) => {
@@ -147,49 +147,12 @@ class EquipamentoController {
             }
         });
     }
-    
-    //antigo salvar
-    salvaaaar() {
-        var oValida = new ValidaForm();
-
-        if (!oValida.validaFormulario('#form')) {
-            $('#msg').html(oValida.getMensagem())
-                            .addClass('alert-danger')
-                            .removeClass('alert-success')
-                            .fadeIn()
-                            .delay(7000)
-                            .fadeOut();
-            return false;
-        }
-
-        $('#form').ajaxSubmit({
-            success: (resp) => {                
-                if(resp.retorno != 'sucesso') {
-                    $('#msg').html(resp.msg)
-                             .addClass('alert-danger')
-                             .removeClass('alert-success')
-                             .fadeIn();
-                }else {
-                    // this.carregaGrid();
-
-                    $('#msg').html(resp.msg)
-                             .addClass('alert-success')
-                             .removeClass('alert-danger')
-                             .fadeIn()
-                             .delay(7000)
-                             .fadeOut();
-
-                    this._form.tipoPessoa.value = '';
-                }
-            }
-        });
-    }
 
     remover(id) {
         if (confirm('Deseja realmente remover este registro?')) {
             $.ajax({
                 type: 'POST',
-                url: BASE_URL + 'bianca/remove-item/' + id,
+                url: BASE_URL + '/equipamento/remove-equipamento/' + id,
                 data: {_token: this._token.value},
                 dataType: 'json',
                     success: (resp) => {                    

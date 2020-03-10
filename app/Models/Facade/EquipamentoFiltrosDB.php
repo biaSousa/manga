@@ -61,7 +61,7 @@ class EquipamentoFiltrosDB extends Model
                       'eq.fk_tipo',
                       'eq.fk_modelo',
                       'eq.fk_marca',
-                      'eq.fk_garantia',
+                      'eq.fk_garantia'
             ]);
 
         return $sql; 

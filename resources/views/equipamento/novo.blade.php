@@ -8,39 +8,24 @@
                 {{csrf_field()}}
                 <div class="row">
                     <div class="form-group">
-                <!-- barra de pesquisa -->
-                        <div class="col-md-3 mr-8">
-                            <!-- <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Pesquisar...">
-                                <span class="input-group-btn">
-                                        <button type="button" class="btn btn-default"><i class="fa fa-search"></i></button>
-                                </span>
-                            </div> -->
-                        </div>
-                <!-- codigo do equipamento -->
-                        <div class="col-md-9 mr-2">
-                            <!-- <label class="col-md-2 control-label">Cod.</label>
-                            <div class="col-md-2">
-                                <input type="text" name="codigo" id="codigo" class="form-control" required>
-                            </div> -->
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="form-group">
-                        <div class="col-md-3 mr-5">
-                            <label for="nome">Tipo de Equipamento</label>
-                                <select name="tipo" id="tipo" class="form-control" required>
-                                    <option value="">Selecione...</option>
-                                    @foreach($tipo as $p)
-                                    <option value="{{$p->id}}">{{$p->nome}}</option>
-                                    @endforeach
-                                </select>
+                    <div class="col-md-3 mr-5">
+                        <label for="nome">Tipo de Equipamento</label>
+                        <div class="input-group">
+                            <select name="tipo" id="tipo" class="form-control custom-select" required>
+                                <option value="">Selecione...</option>
+                                @foreach($tipo as $p)
+                                <option value="{{$p->id}}">{{$p->nome}}</option>
+                                @endforeach
+                            </select>
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-default" data-toggle="modal" data-target="#modalTipoEquipamento">
+                                <i class="glyphicon glyphicon-plus"></i></button>
+                            </span>
                         </div> 
+                    </div> 
                         <div class="col-md-3 mr-5">
                             <label for="patrimonio">Patrimônio</label>
-                            <input type="text" id="patrimonio" name="patrimonio" class="form-control" placeholder="xxxxxx-xxxxxx" onkeypress="oController.eventoEnter()">
-                         
+                            <input type="text" id="patrimonio" name="patrimonio" class="form-control" placeholder="xxxxxx-xxxxxx">
                         </div> 
                         <div class="col-md-2 mr-5">
                             <label for="data_compra">Data da Compra</label>
@@ -52,12 +37,18 @@
                     <div class="form-group">
                         <div class="col-md-3 mr-5">
                             <label for="marca">Marca</label>
+                            <div class="input-group">
                                 <select name="marca" id="marca" class="form-control" required>
                                     <option value="">Selecione...</option>
                                     @foreach($marca as $p)
                                     <option value="{{$p->id}}">{{$p->nome}}</option>
                                     @endforeach
                                 </select>
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default" data-toggle="modal" data-target="#modalMarca">
+                                    <i class="glyphicon glyphicon-plus"></i></button>
+                                </span>
+                            </div> 
                         </div> 
                         <div class="col-md-3 mr-5">
                             <label for="garantia">Garantia</label>
@@ -78,12 +69,18 @@
                     <div class="form-group">
                         <div class="col-md-3 mr-5">
                             <label for="modelo">Modelo</label>
+                            <div class="input-group">
                                 <select name="modelo" id="modelo" class="form-control" required>
                                     <option value="">Selecione...</option>
                                     @foreach($modelo as $p)
                                     <option value="{{$p->id}}">{{$p->nome}}</option>
                                     @endforeach
                                 </select>
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default" data-toggle="modal" data-target="#modalModelo">
+                                    <i class="glyphicon glyphicon-plus"></i></button>
+                                </span>
+                            </div>
                         </div>
                           <div class="col-md-3 mr-5">
                             <label for="unidade">Unidade</label>
@@ -107,47 +104,104 @@
                         </div>
                     </div>
                 </div>
-                    <!-- BOTÃO ADICIONAR -->
+                <!-- Botão Adicionar -->
                 <div class="row">
                     <div class="form-group">
-                        <div class="col-md-20 mr-5">
-                            <label class="col-md-2">&nbsp;</label>
-                            <div>
-                                <button type="submit" class="btn btn-primary"><i class="glyphicon glyphicon-plus"></i> Adicionar</button>
+                        <div class="col-md-7 mr-5">
+                            <div class="col-mr-1">
+                                <button type="submit" class="btn btn-primary"><i class="glyphicon glyphicon-floppy-disk"></i> Salvar</button>
+                            </div>
+                        </div>
+                        <div class="col-md-1 mr-5">
+                            <div class="col-mr-1">
                                 <button type="reset" class="btn btn-primary">Limpar</button>
                             </div>
                         </div>
-                     </div>
+                    </div>
                 </div>
-                <!-- Button trigger modal -->
-                <!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
-                Launch demo modal
-                </button> -->
+                <!-- Modal Tipo de equipamento-->
+                <div class="modal fade" id="modalTipoEquipamento" tabindex="-1" role="dialog" aria-labelledby="TipoTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                <h4 class="modal-title" id="TipoTitle">Novo - Tipo de Equipamento</h4>
+                            </div>
+                        <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6 mr-5">
+                                <!-- <label for="novo_tipo">Tipo</label>
+                                <input type="text" class="form-control" id="novo_tipo" name="novo_tipo" required> -->
+                            </div>
+                        </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                            <button type="submit" class="btn btn-primary">Salvar</button>
+                        </div>
+                        </div>
+                    </div>
+                </div>
 
-                <!-- Modal -->
-                <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered" role="document">
-                    <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        ...
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Save changes</button>
-                    </div>
+                <!-- Modal Marca-->
+                <div class="modal fade" id="modalMarca" tabindex="-1" role="dialog" aria-labelledby="MarcaTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                <h4 class="modal-title" id="MarcaTitle">Novo - Marca</h4>
+                            </div>
+                        <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6 mr-5">
+                                <!-- <label for="novo_marca">Marca</label>
+                                <input type="text" class="form-control" id="novo_marca" name="novo_marca" required> -->
+                            </div>
+                        </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                            <button type="submit" class="btn btn-primary">Salvar</button>
+                        </div>
+                        </div>
                     </div>
                 </div>
+
+                <!-- Modal Modelo-->
+                <div class="modal fade" id="modalModelo" tabindex="-1" role="dialog" aria-labelledby="ModeloTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                <h4 class="modal-title" id="ModeloTitle">Novo - Modelo</h4>
+                            </div>
+                        <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6 mr-5">
+                                <!-- <label for="novo_modelo">Modelo</label>
+                                <input type="text" class="form-control" id="novo_modelo" name="novo_modelo" required> -->
+                            </div>
+                        </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                            <button type="submit" class="btn btn-primary">Salvar</button>
+                        </div>
+                        </div>
+                    </div>
                 </div>
 
             </div>
         </div> 
-        <div class="row">
+
+        <!-- Grid + botoes -->
+        <!-- <div class="row">
             <div class="form-group">
              <div class="col-md-5 content-end mr-5">
                 <div class="btn-group btn-group-sm" role="group">
@@ -174,7 +228,7 @@
             </thead> 
             <tbody>
             </tbody>
-        </table>
+        </table> -->
 </form>
 </section>
 
@@ -183,10 +237,10 @@
 @section('scripts')
 <script src="{{asset('js/jquery.min.js')}}"></script>
 <script src="{{asset('js/jquery.form.js')}}"></script>
-<script src="{{asset('js/app/helpers/Utils.js')}}"></script>
 <script src="{{asset('js/app/models/Ajax.js')}}"></script>
-<script src="{{asset('js/app/views/MensagemView.js')}}"></script>
+<script src="{{asset('js/app/helpers/Utils.js')}}"></script>
 <script src="{{asset('js/app/models/ValidaForm.js')}}"></script>
+<script src="{{asset('js/app/views/MensagemView.js')}}"></script>
 <script src="{{asset('js/app/helpers/GenericModalForm.js')}}"></script>
 <script src="{{asset('js/app/controllers/EquipamentoController.js')}}"></script>
 @include('layout.datatables', ['carregamento_inicial' => true, 'colunas' => ['id', 'tipo', 'modelo', 'marca', 'num_serie', 'patrimonio']])

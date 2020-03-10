@@ -15,8 +15,8 @@ Route::post('/equipamento/store', 'EquipamentoController@createNovoEquipamento')
 
 //Entrada de Equipamento
 Route::get('/equipamento/entrada', 'EquipamentoController@equipamentoEntrada');
-// Route::get('/equipamento/grid_equipamento_entrada',   'EquipamentoController@gridEquipamentoEntrada');
-// Route::post('/equipamento/store_equipamento_entrada', 'EquipamentoController@createEquipamentoEntrada');
+Route::post('/equipamento/storeEntrada', 'EquipamentoController@createEquipamentoEntrada');
+Route::get('/equipamento/grid',   'EquipamentoController@gridEquipamentoEntrada');
 
 //Saida de Equipamento
 // Route::get('/equipamento/saida',  'EquipamentoController@equipamentoSaida');

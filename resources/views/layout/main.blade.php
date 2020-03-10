@@ -188,6 +188,16 @@
             border-color: #ffffff;
             font-size: 16px;
         }
+        
+        button[type=submit]:hover {
+            background-color: #29c68c;
+            border-color: #ffffff;
+        }
+        
+        button[type=reset]:hover {
+            background-color: #29c68c;
+            border-color: #ffffff;
+        }
     </style>
 </head>
 

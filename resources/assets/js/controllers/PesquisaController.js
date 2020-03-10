@@ -9,18 +9,19 @@ class EquipamentoController {
         this.carregaGrid();
     }
 
-    pesquisar(e) {
-        e.preventDefault();
+    pesquisa(event) {
+        event.preventDefault();
         oTable.draw();
     }  
 
-    criar() {
-        window.location = `${BASE_URL}equipamento/novo`;
+    criar(this) {
+        window.location = `${BASE_URL}/equipamento/novo`;
     }
+    
     carregaGrid() {        
         $.ajax({
             type: 'GET',
-            url: BASE_URL+'equipamento/grid',
+            url: BASE_URL+'/equipamento/grid',
             data: this._formGrid.serialize(),
             dataType: 'json',
             success: (response) => {

@@ -1,9 +1,9 @@
 @extends('layout.main')
 @section('conteudo')
 <section class="container-fluid">
-    <form id="form" class="form-horizontal" method="POST" action="{{url('equipamento/search')}}" onclick="oController.pesquisar(event)">
+    <form id="form" class="form-horizontal" method="POST" action="{{url('equipamento/search')}}">
     <input type="hidden" name="codigo" id="codigo" class="form-control" required>
-        <h3>Pesquisa</h3>
+        <h3>Pesquisa de Equipamentos</h3>
         <div class="panel panel-default">
             <div class="panel-body col-md-offset-2">
                 {{csrf_field()}}
@@ -27,7 +27,7 @@
                 <div class="row">
                     <div class="form-group">
                         <div class="col-md-3 mr-5">
-                        <label for="nome">Tipo de Equipamento</label>
+                        <label for="tipo">Tipo de Equipamento</label>
                             <select name="tipo" id="tipo" class="form-control">
                                 <option value="">Selecione...</option>
                                 @foreach($tipo as $p)
@@ -36,56 +36,55 @@
                             </select>
                         </div>
 
-                        <div class="col-md-3 mr-5">
-                        <label for="email">Situação</label>
-                            <select name="marca" id="marca" class="form-control">
+                        <div class="col-md-2 mr-5">
+                        <label for="situacao">Situação</label>
+                            <select name="situacao" id="situacao" class="form-control">
                                 <option value="">Selecione...</option>
-                                @foreach($marca as $p)
+                                @foreach($situacao as $p)
                                 <option value="{{$p->id}}">{{$p->nome}}</option>
                                 @endforeach
                             </select>
                         </div>
                         <div class="col-md-3 mr-5">
-                            <label for="nota">Patrimônio</label>
-                            <input type="nota" id="nota" name="nota" class="form-control"placeholder="xxxxxx-xxxxxx">
+                            <label for="patrimonio">Patrimônio</label>
+                            <input type="patrimonio" id="patrimonio" name="patrimonio" onclick="oController.pesquisa(event)"
+                            class="form-control"placeholder="xxxxxx-xxxxxx">
                         </div>
                     </div>
                 </div>
                 <!-- BOTÃO ADICIONAR -->
                 <div class="row">
                     <div class="form-group">
-                        <div class="col-md-2 mr-5">
+                        <div class="col-md-7 mr-5">
                             <div class="col-mr-1">
-                                <button type="submit" onclick="oController.salvar()" class="btn btn-primary"><i class="glyphicon glyphicon-search"></i> Pesquisar</button>
+                                <button type="submit" class="btn btn-primary"><i class="glyphicon glyphicon-search"></i> Pesquisar</button>
                             </div>
                         </div>
-                        <div class="col-md-2 mr-5">
+                        <div class="col-md-1 mr-5">
                             <div class="col-mr-1">
-                                <button type="reset" onclick="oController.salvar()" class="btn btn-primary">Limpar</button>
+                                <button type="reset" class="btn btn-primary">Limpar</button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-           <!-- <div class="row"> -->
-                    <!-- <div class="row md-5 justify-content-end mr-5">
-                    <div class="btn-group btn-group-sm" role="group">
-                        <button id="novo" type="button" class="btn btn-secondary" onclick="oController.criar(this)" data-url="{{ url('') }}" title="Criar novo" data-toggle="tooltip" data-placement="top">
-                            <i class="material-icons icone">add</i>
-                        </button>
-                        <button id="editar" type="button" class="btn btn-secondary" onclick="oController.editar(this)" data-url="{{ url('') }}" title="Edita" data-toggle="tooltip" data-placement="top">
-                            <i class="material-icons icone">edit</i>
-                        </button>
-                        <button id="excluir" type="button" class="btn btn-secondary" onclick="oController.excluir(this)" data-url="{{ url('') }}" title="Remove" data-toggle="tooltip" data-placement="top">
-                            <i class="material-icons icone">delete</i>
-                        </button>
-                        <button id="reativar" type="button" class="btn btn-secondary" onclick="oController.reativar(this)" data-url="{{ url('') }}" title="Reativa" data-toggle="tooltip" data-placement="top">
-                            <i class="material-icons icone">cached</i>
-                        </button>
-                    </div> -->
-                <!-- </div>
-                </div> -->
+            <div class="row md-5 justify-content-end mr-5">
+                <div class="btn-group btn-group-sm" role="group">
+                    <button id="novo" type="button" class="btn btn-secondary" onclick="oController.criar(this)" base-url="{{ url('') }}" title="Criar novo" data-toggle="tooltip" data-placement="top">
+                        <i class="material-icons icone">add</i>
+                    </button>
+                    <button id="editar" type="button" class="btn btn-secondary" onclick="oController.editar(this)" data-url="{{ url('') }}" title="Edita" data-toggle="tooltip" data-placement="top">
+                        <i class="material-icons icone">edit</i>
+                    </button>
+                    <button id="excluir" type="button" class="btn btn-secondary" onclick="oController.excluir(this)" data-url="{{ url('') }}" title="Remove" data-toggle="tooltip" data-placement="top">
+                        <i class="material-icons icone">delete</i>
+                    </button>
+                    <button id="reativar" type="button" class="btn btn-secondary" onclick="oController.reativar(this)" data-url="{{ url('') }}" title="Reativa" data-toggle="tooltip" data-placement="top">
+                        <i class="material-icons icone">cached</i>
+                    </button>
+                </div>
+            </div>
                 <table id="grid" class="table table-striped table-bordered mb-3">
                     <thead>
                         <tr>

@@ -1,7 +1,7 @@
 @extends('layout.main')
 @section('conteudo')
 <section class="container-fluid">
-    <form id="form" class="form-horizontal" method="POST" action="{{url('equipamento/store_equipamento_entrada')}}" onsubmit="oController.salvar(event)">
+    <form id="form" class="form-horizontal" method="POST" action="{{url('equipamento/storeEntrada')}}" onsubmit="oController.salvar(event)">
         <h3>Entrada de Equipamento</h3>
         <div class="panel panel-default">
             <div class="panel-body col-md-offset-2">
@@ -28,7 +28,7 @@
                     <div class="form-group">
                         <div class="col-md-2 mr-5">
                             <label for="data_movimentacao">Data da Movimentação</label>
-                            <input type="date" id="data_movimentacao" name="data_movimentacao" class="form-control">
+                            <input type="date" id="data_movimentacao" name="data_movimentacao" class="form-control" required>
                         </div>
                         <div class="col-md-2 mr-5">
                             <label for="num_movimentacao">Num. da Movimentação</label>
@@ -49,7 +49,7 @@
                     <div class="form-group">
                     <div class="col-md-4 mr-5">
                             <label for="tecnico">Tecnico Responsável Por Receber</label>
-                                <select name="tecnico" id="tecnico" class="form-control">
+                                <select name="tecnico" id="tecnico" class="form-control" required> 
                                     <option value="">Selecione...</option>
                                     @foreach($tecnico as $p)
                                     <option value="{{$p->id}}">{{$p->nome}}</option>
@@ -58,12 +58,18 @@
                         </div>
                         <div class="col-md-4 mr-5">
                             <label for="setor">Setor</label>
+                            <div class="input-group">
                                 <select name="setor" id="setor" class="form-control">
                                     <option value="">Selecione...</option>
                                     @foreach($setor as $p)
                                     <option value="{{$p->id}}">{{$p->nome}}</option>
                                     @endforeach
                                 </select>
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default" data-toggle="modal" data-target="#modalSetor">
+                                    <i class="glyphicon glyphicon-plus"></i></button>
+                                </span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -71,7 +77,7 @@
                     <div class="form-group">
                     <div class="col-md-4 mr-5">
                             <label for="servidor">Servidor Responsável Por Entregar</label>
-                                <select name="servidor" id="servidor" class="form-control">
+                                <select name="servidor" id="servidor" class="form-control" required>
                                     <option value="">Selecione...</option>
                                     @foreach($servidor as $p)
                                     <option value="{{$p->id}}">{{$p->nome}}</option>
@@ -84,8 +90,7 @@
                         </div>
                     </div>
                 </div>
-                adicionar grid<br>
-                adicionar modal
+                ADICIONAR GRID<br>
                 <div class="row">
                     <div class="form-group">
                         <div class="col-md-3 mr-8">
@@ -96,7 +101,7 @@
                 <!-- BOTÃO ADICIONAR -->
                 <div class="row">
                     <div class="form-group">
-                        <div class="col-md-1 mr-5">
+                        <div class="col-md-7 mr-5">
                             <div class="col-mr-1">
                                 <button type="submit" class="btn btn-primary"><i class="glyphicon glyphicon-floppy-disk"></i> Salvar</button>
                             </div>
@@ -110,6 +115,44 @@
                 </div>
             </div>
         </div>
+        <!-- Modal Setor-->
+        <div class="modal fade" id="modalSetor" tabindex="-1" role="dialog" aria-labelledby="setorTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title" id="setorTitle">Novo - Setor</h4>
+                    </div>
+                <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6 mr-5">
+                        <!-- <label for="novo_unidade">Unidade de Origem</label>
+                            <select name="novo_unidade" id="novo_unidade" class="form-control">
+                                <option value="">Selecione...</option>
+                                @foreach($unidade as $p)
+                                <option value="{{$p->id}}">{{$p->nome}}</option>
+                                @endforeach
+                            </select> -->
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-md-6 mr-5">
+                        <!-- <label for="novo_setor">Setor</label>
+                        <input type="text" class="form-control" id="novo_setor" name="novo_setor" required> -->
+                    </div>
+                </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                    <button type="submit" class="btn btn-primary">Salvar</button>
+                </div>
+                </div>
+            </div>
+        </div>
+
     </form>
 </section>
 
@@ -123,8 +166,8 @@
 <script src="{{asset('js/app/views/MensagemView.js')}}"></script>
 <script src="{{asset('js/app/models/ValidaForm.js')}}"></script>
 <script src="{{asset('js/app/helpers/GenericModalForm.js')}}"></script>
-<script src="{{asset('js/app/controllers/EntradaController.js')}}"></script>
+<script src="{{asset('js/app/controllers/EquipamentoController.js')}}"></script>
 <script>
-    var oController = new EntradaController();
+    var oController = new EquipamentoController();
 </script>
 @endsection
