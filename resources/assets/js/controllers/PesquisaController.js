@@ -1,17 +1,18 @@
-class EquipamentoController {
+class PesquisaController {
     
     constructor() {
         this._form = document.getElementById('form');
-        this._formGrid = document.getElementById('formulario');
-        this._token = document.querySelector('input[name="_token"]');
-        this._table = document.querySelector('#grid tbody');
+        this._grid = document.getElementById('grid');
+        // this._token = document.querySelector('input[name="_token"]');
+        this._table = document.querySelector('#grid');
         this._msgTable = "inhai bebe";
-        this.carregaGrid();
+        // this.carregaGrid();
+        //never gonna give a fuck
     }
 
-    pesquisa(event) {
-        event.preventDefault();
-        oTable.draw();
+    pesquisar(e) {
+        e.preventDefault();
+        this._table.draw();
     }  
 
     criar(this) {
@@ -20,9 +21,9 @@ class EquipamentoController {
     
     carregaGrid() {        
         $.ajax({
-            type: 'GET',
-            url: BASE_URL+'/equipamento/grid',
-            data: this._formGrid.serialize(),
+            type: 'get',
+            url: BASE_URL+'/equipamento/gridPesquisa',
+            data: this._table.serialize(),
             dataType: 'json',
             success: (response) => {
                 var data = response.data;
@@ -30,18 +31,6 @@ class EquipamentoController {
                 var linha = '';
                 
                 if(size > 0) {
-                    for(let i=0; i<size; i++){
-                        
-                        linha += `<tr>
-                            <td>${data[i].tipo_conta}</td>
-                            <td>${data[i].tipo_fonte}</td>
-                            <td>
-                                <button type="button" class="btn btn-danger btn-sm" onclick="oController.remover(${data[i].id})">
-                                    <i class="glyphicon glyphicon-trash"></i>
-                                </button>
-                            </td>
-                        </tr>`;
-                    }
                     this._table.innerHTML = linha;
                     }else {
                     this._table.innerHTML = `<tr><td colspan="3" align="center">${this._msgTable}</td></tr>`;
@@ -56,42 +45,62 @@ class EquipamentoController {
             this.carregaGrid();
         }
     }
-
-    salvar() {
-        var oValida = new ValidaForm();
-
-        if (!oValida.validaFormulario('#form')) {
-            $('#msg').html(oValida.getMensagem())
-                            .addClass('alert-danger')
+    //novo salvar
+    salvar(e) {
+        e.preventDefault();
+        Ajax.ajax({
+            url: this._form.action,
+            data: this._form.serialize(),
+            method: 'post',
+            success: function (e) {
+                let snackbar = new Snackbar();
+                snackbar.exibirVerde(e.msg);
+            },
+            error: function (e) {
+                let snackbar = new Snackbar();
+                snackbar.exibirVermelho(e.msg);
+                $('#snackbar').html(e.msg)
+                            .addClass('alert')
                             .removeClass('alert-success')
+                            .addClass('alert-danger')
                             .fadeIn()
-                            .delay(7000)
+                            .delay(5000)
                             .fadeOut();
-            return false;
-        }
-
-        $('#form').ajaxSubmit({
-            success: (resp) => {                
-                if(resp.retorno != 'sucesso') {
-                    $('#msg').html(resp.msg)
-                             .addClass('alert-danger')
-                             .removeClass('alert-success')
-                             .fadeIn();
-                }else {
-                    // this.carregaGrid();
-
-                    $('#msg').html(resp.msg)
-                             .addClass('alert-success')
-                             .removeClass('alert-danger')
-                             .fadeIn()
-                             .delay(7000)
-                             .fadeOut();
-
-                    this._form.tipoPessoa.value = '';
-                }
             }
         });
     }
+    // salvar() {
+    //     var oValida = new ValidaForm();
+
+    //     if (!oValida.validaFormulario('#form')) {
+    //         $('#msg').html(oValida.getMensagem())
+    //                         .addClass('alert-danger')
+    //                         .removeClass('alert-success')
+    //                         .fadeIn()
+    //                         .delay(7000)
+    //                         .fadeOut();
+    //         return false;
+    //     }
+    //     $('#form').ajaxSubmit({
+    //         success: (resp) => {                
+    //             if(resp.retorno != 'sucesso') {
+    //                 $('#msg').html(resp.msg)
+    //                          .addClass('alert-danger')
+    //                          .removeClass('alert-success')
+    //                          .fadeIn();
+    //             }else {
+    //                 this.carregaGrid();
+
+    //                 $('#msg').html(resp.msg)
+    //                          .addClass('alert-success')
+    //                          .removeClass('alert-danger')
+    //                          .fadeIn()
+    //                          .delay(7000)
+    //                          .fadeOut();
+    //             }
+    //         }
+    //     });
+    // }
     
     excluir(e) {
         let linha = oTable.rows('.selected').data()[0];
@@ -100,7 +109,7 @@ class EquipamentoController {
             if (confirm('Deseja excluir este item?'))
                         
             Ajax.ajax({
-                url: `${e.dataset.url}/admin/usuario/excluir/`+[linha.id],
+                url: `${e.dataset.url}/equipametno/excluir/`+[linha.id],
                 method: 'post',
                 data: {id: linha.id},
                 success: (response) => {
@@ -148,3 +157,4 @@ class EquipamentoController {
             }
         }
     }
+    oController = new PesquisaController();

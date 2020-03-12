@@ -7,38 +7,59 @@ use App\Models\Entity\Modelo;
 use App\Models\Entity\Situacao;
 use App\Models\Entity\Equipamento;
 use App\Models\Entity\Recebimento;
+use App\Models\Paginacao;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 
 class EquipamentoDB extends Model
 {
     //index.blade.php
-    public static function gridPesquisa()
+    public static function gridPesquisa($num_serie = null, $num_mov = null, $data_mov = null, $patrimonio = null, $tipo = null, $situacao = null)
     {
         $db = DB::table('recebimento as re')
-            ->select(['re.id', 're.data_movimentacao']);
+            ->join('tipo as ti', 're.fk_tipo', '=', 'ti.id')
+            ->join('marca as ma', 're.fk_marca', '=', 'ma.id')
+            ->join('modelo as mo', 're.fk_modelo', '=', 'mo.id')
+            ->join('tecnico as te', 're.fk_tecnico', '=', 'te.id')
+            ->join('unidade as un', 're.fk_unidade', '=', 'un.id')
+            ->join('servidor as ser', 're.fk_servidor', '=', 'ser.id')
+            ->join('situacao as sit', 're.fk_situacao', '=', 'sit.id')
+            ->select(['re.id',
+                      're.num_serie',
+                      're.num_movimentacao as num_mov',
+                      're.data_movimentacao as data_mov',
+                      're.patrimonio', //patrimonio vem de equipamento
+                      'ti.nome as tipo',
+                      'ma.nome as marca',
+                      'mo.nome as modelo',
+                      'te.nome as tecnico',
+                      'un.nome as unidade',
+                      'ser.nome as servidor',
+                      'sit.nome as situacao'
+            ]);
 
-        if ($patrimonio) {
-            $db->where('patrimonio', 'ilike', "%$patrimonio%");
+        if ($num_serie) {
+            $db->where('num_serie', $num_serie);
         }
 
-        if ($data_movimentacao) {
-            $db->where('data_movimentacao', $data_movimentacao);
+        if ($num_mov) {
+            $db->where('num_mov', $num_mov);
         }
 
-        if ($modelo) {
-            $db->join('manga.modelo as mo', 're.fk_modelo', '=', 'mo.id')
-                ->where('mo.id', $modelo);
+        if ($data_mov) {
+            $db->where('data_mov', $data_mov);
         }
+
+        // if ($patrimonio) {
+        //     $db->where('patrimonio', 'ilike',"%$patrimonio%");
+        // }
 
         if ($tipo) {
-            $db->join('manga.tipo as t', 're.fk_tipo', '=', 't.id')
-                ->where('t.id', $tipo);
+            $db->where('ti.nome', $tipo);
         }
 
         if ($situacao) {
-            $db->join('manga.situacao as sit','re.fk_situacao','=','sit.id')
-               ->where('sit.id', $situacao);
+            $db->where('situacao', $situacao);
         }
 
         $aDataTables = Paginacao::dataTables($db, true);
@@ -50,7 +71,7 @@ class EquipamentoDB extends Model
     public static function gridEntrada()
     {
         $sql = DB::table('equipamento as e')
-            ->join('tipo as t', 'e.fk_tipo', '=', 't.id')
+            ->join('tipo as ti', 'e.fk_tipo', '=', 'ti.id')
             ->join('marca as ma', 'e.fk_marca', '=', 'ma.id')
             ->join('modelo as mo', 'e.fk_modelo', '=', 'mo.id')
             ->select(['e.id', 

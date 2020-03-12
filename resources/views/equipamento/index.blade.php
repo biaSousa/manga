@@ -1,8 +1,8 @@
 @extends('layout.main')
 @section('conteudo')
 <section class="container-fluid">
-    <form id="form" class="form-horizontal" method="POST" action="{{url('equipamento/search')}}">
-    <input type="hidden" name="codigo" id="codigo" class="form-control" required>
+    <form id="form" class="form-horizontal"  action="{{url('equipamento/gridPesquisa')}}" >
+    <input type="hidden" name="id" id="id" class="form-control" required>
         <h3>Pesquisa de Equipamentos</h3>
         <div class="panel panel-default">
             <div class="panel-body col-md-offset-2">
@@ -22,12 +22,27 @@
                             </div>
                         </div>
                     </div> -->
-                <p>Adicionar filtros bianca</p> 
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-md-2 mr-5">
+                            <label for="patrimonio">Patrimônio</label>
+                            <input type="text" id="patrimonio" name="patrimonio" class="form-control" placeholder="xxxxxx-xxxxxx">
+                        </div>
+                        <div class="col-md-2 mr-5">
+                            <label for="num_serie">Num. de Série</label>
+                            <input type="text" id="num_serie" name="num_serie" class="form-control" placeholder="xxxxxx-xxxxxx">
+                        </div>
+                        <div class="col-md-2 mr-5">
+                            <label for="num_mov">Num. da Movimentação</label>
+                            <input type="text" id="num_mov" name="num_mov" class="form-control" placeholder="xxxxxxxxx-2020">
+                        </div>
+                    </div>
                 </div>
                 <div class="row">
                     <div class="form-group">
                         <div class="col-md-3 mr-5">
-                        <label for="tipo">Tipo de Equipamento</label>
+                            <label for="tipo">Tipo de Equipamento</label>
                             <select name="tipo" id="tipo" class="form-control">
                                 <option value="">Selecione...</option>
                                 @foreach($tipo as $p)
@@ -35,9 +50,8 @@
                                 @endforeach
                             </select>
                         </div>
-
-                        <div class="col-md-2 mr-5">
-                        <label for="situacao">Situação</label>
+                        <div class="col-md-3 mr-5">
+                            <label for="situacao">Situação</label>
                             <select name="situacao" id="situacao" class="form-control">
                                 <option value="">Selecione...</option>
                                 @foreach($situacao as $p)
@@ -45,19 +59,19 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="col-md-3 mr-5">
-                            <label for="patrimonio">Patrimônio</label>
-                            <input type="patrimonio" id="patrimonio" name="patrimonio" onclick="oController.pesquisa(event)"
-                            class="form-control"placeholder="xxxxxx-xxxxxx">
+                        <div class="col-md-2 mr-5">
+                            <label for="data_mov">Data da Movimentação</label>
+                            <input type="date" id="data_mov" name="data_mov" class="form-control">
                         </div>
                     </div>
                 </div>
-                <!-- BOTÃO ADICIONAR -->
+                <!-- BOTÃO PESQUISAR -->
                 <div class="row">
                     <div class="form-group">
                         <div class="col-md-7 mr-5">
                             <div class="col-mr-1">
-                                <button type="submit" class="btn btn-primary"><i class="glyphicon glyphicon-search"></i> Pesquisar</button>
+                                <button type="submit" class="btn btn-primary" onclick="oController.pesquisar(e)">
+                                <i class="glyphicon glyphicon-search"></i> Pesquisar</button>
                             </div>
                         </div>
                         <div class="col-md-1 mr-5">
@@ -69,8 +83,8 @@
                 </div>
             </div>
         </div>
-            <div class="row md-5 justify-content-end mr-5">
-                <div class="btn-group btn-group-sm" role="group">
+            <!-- <div class="row md-5 justify-content-end mr-5"> -->
+                <!-- <div class="btn-group btn-group-sm" role="group">
                     <button id="novo" type="button" class="btn btn-secondary" onclick="oController.criar(this)" base-url="{{ url('') }}" title="Criar novo" data-toggle="tooltip" data-placement="top">
                         <i class="material-icons icone">add</i>
                     </button>
@@ -83,16 +97,24 @@
                     <button id="reativar" type="button" class="btn btn-secondary" onclick="oController.reativar(this)" data-url="{{ url('') }}" title="Reativa" data-toggle="tooltip" data-placement="top">
                         <i class="material-icons icone">cached</i>
                     </button>
-                </div>
+                </div> -->
             </div>
                 <table id="grid" class="table table-striped table-bordered mb-3">
                     <thead>
                         <tr>
-                            <th width="5%">ID</th>
-                            <th width="8%">Patrimonio</th>
-                            <th width="8%">Tipo</th>
-                            <th width=10%>Modelo</th>
-                            <th width="5%">Data de Entrada</th>
+                            <th width="2%">ID</th>
+                            <th width="5%">Patrimonio</th>
+                            <th width="5%">Num. Série</th>
+                            <th width="3%">Tipo</th>
+                            <th width="3%">Situação</th>
+                            <th width="3%">Marca</th>
+                            <th width="3%">Modelo</th>
+                            <th width="5%">Data da Mov.</th>
+                            <th width="5%">Num. da Mov.</th>
+                            <th width="5%">Tecnico</th>
+                            <th width="5%">Servidor</th>
+                            <th width="3%">Setor</th>
+                            <th width="5%">Unidade</th>
                         </tr> 
                     </thead> 
                     <tbody>
@@ -104,15 +126,15 @@
 @endsection
 
 @section('scripts')
-<script src="{{asset('js/jquery.min.js')}}"></script>
 <script src="{{asset('js/jquery.form.js')}}"></script>
-<script src="{{asset('js/app/helpers/Utils.js')}}"></script>
 <script src="{{asset('js/app/models/Ajax.js')}}"></script>
-<script src="{{asset('js/app/views/MensagemView.js')}}"></script>
+<script src="{{asset('js/app/helpers/Utils.js')}}"></script>
 <script src="{{asset('js/app/models/ValidaForm.js')}}"></script>
+<script src="{{asset('js/app/views/MensagemView.js')}}"></script>
 <script src="{{asset('js/app/helpers/GenericModalForm.js')}}"></script>
 <script src="{{asset('js/app/controllers/PesquisaController.js')}}"></script>
-@include('layout.datatables', ['carregamento_inicial' => true, 'colunas' => ['id', 'patrimonio', 'tipo', 'modelo', 'data_movimentacao']])
+@include('layout.datatables', ['carregamento_inicial' => true, 'colunas' => ['id', 'patrimonio', 'num_serie', 'tipo', 'situacao', 'marca',
+ 'modelo', 'data_mov', 'num_mov', 'tecnico', 'servidor', 'setor', 'unidade']])
 <script>
     var oController = new PesquisaController();
 </script>

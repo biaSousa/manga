@@ -11,6 +11,8 @@ class EquipamentoController {
         this._patrimonio = document.getElementById('patrimonio');
         this._datacompra = document.getElementById('data_compra');
         this._notafiscal = document.getElementById('nota_fiscal');
+        
+        this._modalSetor = document.getElementById('modal_setor');
 
         this._formGrid = document.getElementById('formulario');
         this._token = document.querySelector('input[name="_token"]');
@@ -73,22 +75,22 @@ class EquipamentoController {
         });
     }
 
-    // adicionarEquipamento() {
-    //     if (!this._perfil.value) return;
+    adicionarEquipamento() {
+        if (!this._perfil.value) return;
 
-    //     if (this._grid.querySelectorAll(`tbody tr[id="${this._perfil.value}"]`).length > 0) {
-    //         return false;
-    //     }
+        if (this._grid.querySelectorAll(`tbody tr[id="${this._perfil.value}"]`).length > 0) {
+            return false;
+        }
 
-    //     oTable.row.add({
-    //         'DT_RowId': this._perfil.value,
-    //         'perfil': this._perfil.options[this._perfil.selectedIndex].text + '<input type="hidden" value="' + this._perfil.value + '" name="perfil[]">'
-    //     }).draw();
-    // }
+        oTable.row.add({
+            'DT_RowId': this._perfil.value,
+            'perfil': this._perfil.options[this._perfil.selectedIndex].text + '<input type="hidden" value="' + this._perfil.value + '" name="perfil[]">'
+        }).draw();
+    }
 
-    // removerPerfil() {
-    //     oTable.rows('.selected').remove().draw();
-    // }
+    removerPerfil() {
+        oTable.rows('.selected').remove().draw();
+    }
 
     carregaGrid() {        
         $.ajax({

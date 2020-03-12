@@ -1,7 +1,7 @@
 @extends('layout.main')
 @section('conteudo')
 <section class="container-fluid">
-    <form id="form" class="form-horizontal" method="POST" action="{{url('equipamento/storeEntrada')}}" onsubmit="oController.salvar(event)">
+    <form id="form" class="form-horizontal" method="POST" action="{{url('equipamento/storeEntrada')}}" onsubmit="oController.salvar(e)">
         <h3>Entrada de Equipamento</h3>
         <div class="panel panel-default">
             <div class="panel-body col-md-offset-2">
@@ -32,11 +32,11 @@
                         </div>
                         <div class="col-md-2 mr-5">
                             <label for="num_movimentacao">Num. da Movimentação</label>
-                            <input type="text" id="num_movimentacao" name="num_movimentacao" class="form-control" placeholder="xxxxxxxxx-2020">
+                            <input type="text" id="num_movimentacao" name="num_movimentacao" class="form-control" placeholder="xxxxxxxxx-2020" required>
                         </div>
                         <div class="col-md-4 mr-5">
                             <label for="unidade">Unidade de Origem</label>
-                                <select name="unidade" id="unidade" class="form-control">
+                                <select name="unidade" id="unidade" class="form-control" required>
                                     <option value="">Selecione...</option>
                                     @foreach($unidade as $p)
                                     <option value="{{$p->id}}">{{$p->nome}}</option>
@@ -59,7 +59,7 @@
                         <div class="col-md-4 mr-5">
                             <label for="setor">Setor</label>
                             <div class="input-group">
-                                <select name="setor" id="setor" class="form-control">
+                                <select name="setor" id="setor" class="form-control" required>
                                     <option value="">Selecione...</option>
                                     @foreach($setor as $p)
                                     <option value="{{$p->id}}">{{$p->nome}}</option>
@@ -75,7 +75,7 @@
                 </div>
                 <div class="row">
                     <div class="form-group">
-                    <div class="col-md-4 mr-5">
+                        <div class="col-md-4 mr-5">
                             <label for="servidor">Servidor Responsável Por Entregar</label>
                                 <select name="servidor" id="servidor" class="form-control" required>
                                     <option value="">Selecione...</option>
@@ -84,9 +84,18 @@
                                     @endforeach
                                 </select>
                         </div>
-                        <div class="col-md-3 mr-5">
+                        <div class="col-md-2 mr-5">
                             <label for="telefone">Telefone</label>
                             <input type="phone" id="telefone" name="telefone" class="form-control" placeholder="(xx) xxxxx-xxxx">
+                        </div>
+                        <div class="col-md-2 mr-5">
+                            <label for="situacao">Situação</label>
+                                <select name="situacao" id="situacao" class="form-control" required>
+                                    <option value="">Selecione...</option>
+                                    @foreach($situacao as $p)
+                                    <option value="{{$p->id}}">{{$p->nome}}</option>
+                                    @endforeach
+                                </select>
                         </div>
                     </div>
                 </div>
@@ -113,6 +122,17 @@
                         </div>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <div id="snackbar" role="alert">
+                                <button type="button" class="close">
+                                    <span aria-hidden="true"></span></button>
+                                <div id="msg"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <!-- Modal Setor-->
@@ -120,23 +140,25 @@
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                        <h4 class="modal-title" id="setorTitle">Novo - Setor</h4>
-                    </div>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                <form id="modal_setor" action="{{ url('contact')}}" method="POST">
+                {{ csrf_field() }}
+                <h4 class="modal-title" id="setorTitle">Novo - Setor</h4>
+                </div>
                 <div class="modal-body">
-                <div class="row">
+                <!-- <div class="row">
                     <div class="col-md-6 mr-5">
-                        <!-- <label for="novo_unidade">Unidade de Origem</label>
-                            <select name="novo_unidade" id="novo_unidade" class="form-control">
+                        <label for="novo_unidade">Unidade de Origem</label>
+                            <select name="novo_unidade" id="novo_unidade" class="form-control" required>
                                 <option value="">Selecione...</option>
                                 @foreach($unidade as $p)
                                 <option value="{{$p->id}}">{{$p->nome}}</option>
                                 @endforeach
-                            </select> -->
+                            </select>
                     </div>
-                </div>
+                </div> -->
                 <br>
                 <div class="row">
                     <div class="col-md-6 mr-5">
@@ -147,7 +169,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-                    <button type="submit" class="btn btn-primary">Salvar</button>
+                    <button type="submit" class="btn btn-primary">Adicionar</button>
                 </div>
                 </div>
             </div>

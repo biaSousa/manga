@@ -46,7 +46,7 @@ class EquipamentoFiltrosDB extends Model
         $sql = DB::table('equipamento as eq')
             ->join('setor as se', 'eq.fk_setor', '=', 'se.id')
             ->join('unidade as un', 'eq.fk_unidade', '=', 'un.id')
-            ->join('tipo as t', 'eq.fk_tipo', '=', 't.id')
+            ->join('tipo as ti', 'eq.fk_tipo', '=', 'ti.id')
             ->join('marca as ma', 'eq.fk_marca', '=', 'ma.id')
             ->join('modelo as mo', 'eq.fk_modelo', '=', 'mo.id')
             ->join('garantia as ga', 'eq.fk_garantia', '=', 'ga.id')

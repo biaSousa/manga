@@ -15,6 +15,7 @@ use App\Models\Entity\Garantia;
 use App\Models\Entity\Situacao;
 use App\Models\Entity\Equipamento;
 use App\Models\Entity\Recebimento;
+use App\Models\Entity\SetorUnidade;
 use App\Models\Facade\EquipamentoDB;
 use App\Models\Facade\EquipamentoFiltrosDB;
 use Illuminate\Support\Facades\Auth;
@@ -49,41 +50,39 @@ class EquipamentoController extends Controller
         return view('equipamento.novo', compact('tipo', 'marca', 'modelo', 'unidade', 'garantia', 'patrimonio'));
     }
 
-    //salva novo equipamento ANTIGO
-    // public function createNovoEquipamentooo(Request $request)
-    // {
-    //     DB::beginTransaction();
+    public function equipamentoEntrada()
+    {        
+        $tipo     = Tipo::all(['id', 'nome']);
+        $marca    = Marca::all(['id', 'nome']);
+        $setor    = Setor::all(['id', 'nome']);
+        $modelo   = Modelo::all(['id', 'nome']);
+        $unidade  = Unidade::all(['id', 'nome']);
+        $tecnico  = Tecnico::all(['id', 'nome']);
+        $servidor = Servidor::all(['id', 'nome']);
+        $situacao = Situacao::all(['id', 'nome']);
+        
+        return view('equipamento.entrada', compact ( 'tipo', 'marca', 'setor', 'modelo', 'unidade', 'tecnico', 'servidor', 'situacao'));
+    }
 
-    //     try{
-    //         $oEquipamento = new Equipamento();
-    //         $oEquipamento->status = 1;
-    //         $oEquipamento->data_compra = date('Y-m-d H:i:s');
-    //         $oEquipamento->fk_tipo     = request('tipo');
-    //         $oEquipamento->fk_marca    = request('marca');
-    //         $oEquipamento->fk_modelo   = request('modelo');
-    //         $oEquipamento->fk_unidade  = request('unidade');
-    //         $oEquipamento->num_serie   = request('num_serie');
-    //         $oEquipamento->fk_garantia = request('garantia', null);
-    //         $oEquipamento->descricao   = request('descricao', null);
-    //         $oEquipamento->patrimonio  = request('patrimonio', null);
-    //         $oEquipamento->nota_fiscal = request('nota_fiscal', null);
-
-    //         $p = (object) $request->all();
-
-    //         $oEquipamento->save();
-    //         DB::commit();
-
-    //         return response()->json(array('msg' => 'Equipamento cadastrado com sucesso.'));
-    //     } catch (\Exception $e) {
-    //         DB::rollback();
-    //         return response()->json(array('msg' => $e->getMessage()), 422);
-    //     }
-    // }
-    
-    //tipo -> tipo
-    //marca -> tipo / marca 
-    //modelo -> marca / modelo
-
+    public function gridPesquisa()
+    {
+        $patrimonio  = request('patrimonio', null);
+        $num_serie   = request('num_serie', null);
+        $tipo        = request('tipo', null);
+        $situacao    = request('situacao', null);
+        $marca       = request('marca', null);
+        $modelo      = request('modelo', null);
+        $data_mov    = request('data_mov', null);
+        $num_mov     = request('num_mov', null);
+        $tecnico     = request('tecnico', null);
+        $servidor    = request('servidor', null);
+        $setor       = request('setor', null);
+        $unidade     = request('unidade', null);
+        
+        return response()->json(EquipamentoDB::gridPesquisa($patrimonio, $num_serie, $situacao, $tipo, $marca, $modelo, $data_mov,
+        $num_mov, $tecnico, $servidor, $setor, $unidade));
+    } 
+  
     //salva novo equipamento com updateOrCreate NOVO
     public function createNovoEquipamento(Request $request)
     {
@@ -116,6 +115,9 @@ class EquipamentoController extends Controller
             //     echo 'Não foi salvo';
             // }
 
+            //tipo   -> tipo
+            //marca  -> tipo / marca 
+            //modelo -> marca / modelo
             $p = (object) $request->all();
 
             $oEquipamento->save();
@@ -128,31 +130,6 @@ class EquipamentoController extends Controller
         }
     }
 
-    public function equipamentoEntrada()
-    {        
-        $tipo     = Tipo::all(['id', 'nome']);
-        $marca    = Marca::all(['id', 'nome']);
-        $setor    = Setor::all(['id', 'nome']);
-        $modelo   = Modelo::all(['id', 'nome']);
-        $unidade  = Unidade::all(['id', 'nome']);
-        $tecnico  = Tecnico::all(['id', 'nome']);
-        $servidor = Servidor::all(['id', 'nome']);
-        
-        return view('equipamento.entrada', compact ( 'tipo', 'marca', 'setor', 'modelo', 'unidade', 'tecnico', 'servidor'));
-    }
-
-    public function gridEquipamentoEntrada()
-    {
-        $tipo   = request('tipo', null);
-        $status = request('status', null);
-        $modelo = request('modelo', null);
-        $data_movimentacao = request('data_movimentacao', null);
-        
-        //filtro de patrimonio/num_serie tras dados do codigo de barras 
-        return ['data' => EquipamentoDB::gridEntrada($patrimonio, $tipo, $modelo, $data_movimentacao)];
-        // return response()->json(UsuarioDB::grid($status));
-    } 
-
     //salva  nova entrada NOVO
     public function createEquipamentoEntrada(Request $request)
     {
@@ -160,18 +137,35 @@ class EquipamentoController extends Controller
         try{
             $oEntrada = Recebimento::updateOrCreate([
             'fk_setor'     => $request->get('setor'),
+            'fk_unidade'   => $request->get('unidade'),
             'fk_tecnico'   => $request->get('tecnico'),
             'fk_servidor'  => $request->get('servidor'),
-            'telefone'     => $request->get('telefone'),
-            'descricao'    => $request->get('descricao'),
-            'fk_unidade'   => $request->get('fk_telefone'),
+            'fk_situacao'  => $request->get('fk_situacao'),
+            'telefone'     => $request->get('telefone', null),
+            'descricao'    => $request->get('descricao', null),
             'num_movimentacao'  => $request->get('num_movimentacao'),
             'data_movimentacao' => $request->get('data_movimentacao')
-        ]);
-        
-        // dd($request->all());
+            ]);
+
+            //encontrar id da linha antes de salvar
+            $oEquipamento = Equipamento::updateOrCreate([
+                'fk_setor'    => $request->get('setor'), //novo_setor
+                'fk_unidade'  => $request->get('unidade'),
+            ]);
+
+            $oSetorUnidade = SetorUnidade::updateOrCreate([
+                'fk_setor'    => $request->get('setor'), //novo_setor
+                'fk_unidade'  => $request->get('unidade'),
+            ]);
+
+            $oSetor = Setor::updateOrCreate([
+                'nome'        => $request->get('setor'), //novo_setor
+                'fk_unidade'  => $request->get('unidade'),
+            ]);
+
 
         $p = (object) $request->all();
+        // dd($request->all());
 
         $oEntrada->save();
 
@@ -182,70 +176,11 @@ class EquipamentoController extends Controller
             DB::rollback();
             return response()->json(array('msg' => $e->getMessage()), 422);
         }
-    }
-    //manual ANTIGO
-    // public function createEquipamentoEntradaaaa(Request $request )
-    // {
-    //     DB::beginTransaction();
-    //     try{
-    //         $oEntrada = new Recebimento();
-    //         $oEntrada->fk_setor    = request('setor');
-    //         $oEntrada->fk_unidade  = request('unidade');
-    //         $oEntrada->fk_tecnico  = request('tecnico');
-    //         $oEntrada->fk_servidor = request('servidor');
-    //         $oEntrada->telefone    = request('telefone');
-    //         $oEntrada->descricao   = request('descricao', null);
-    //         $oEntrada->data_movimentacao = date('Y-m-d H:i:s');
-    //         $oEntrada->num_movimentacao  = request('num_movimentacao', null);
-            
-    //         $p = (object) $request->all();
-    //         // dd($request->all());
+    }    
 
-    //         $oEntrada->save();
-
-    //         DB::commit();
-
-    //         return response()->json(array('msg' => 'Entrada cadastrada com sucesso.'));
-    //     } catch (\Exception $e) {
-    //         DB::rollback();
-    //         return response()->json(array('msg' => $e->getMessage()), 422);
-    //     }
+    // public function equipamentoSaida()
+    // {        
+    //     return view('equipamento.saida');
     // }
 
-    //com updateorcreate
-    
-
-    public function equipamentoSaida()
-    {        
-        return view('equipamento.saida');
-    }
-
-    // public function salvaCurso(Request $request)
-    // {
-    //     DB::beginTransaction();
-
-    //     try {
-    //         $e = (object) $request->all();
-
-    //         $realizadores = Realizadores::create([
-    //             'nome' => $e->realizadores
-    //         ]);
-
-    //         $tipoCurso = TipoCurso::create([
-    //             'nome' => $e->tipoCurso
-    //         ]);
-
-    //         TipoCursoDB::create([
-    //             'fk_realizadores' => $realizadores['id'],
-    //             'fk_tipo_curso'   => $tipoCurso['id'],
-    //         ]);
-
-    //         DB::commit();
-
-    //         return reponse()->json(['retorno' => 'sucesso', 'msg' => 'Evento salvo com sucesso.']);
-    //     } catch (\Exception $e) {
-    //         DB::rollBack();
-    //         return reponse()->json(['retorno' => 'erro', 'msg' => 'Algo inesperado ocorreu. <br>' . $e->getMessage(), 500]);
-    //     }
-    // }   
 }
