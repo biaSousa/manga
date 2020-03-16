@@ -4,6 +4,7 @@ namespace App\Models\Facade;
 use App\Models\Entity\Tipo;
 use App\Models\Entity\Marca;
 use App\Models\Entity\Modelo;
+use App\Models\Entity\Garantia;
 use App\Models\Entity\Situacao;
 use App\Models\Entity\Equipamento;
 use App\Models\Entity\Recebimento;
@@ -28,7 +29,7 @@ class EquipamentoDB extends Model
                       're.num_serie',
                       're.num_movimentacao',
                       're.data_movimentacao',
-                      're.patrimonio', //patrimonio vem de equipamento
+                      're.patrimonio', //patrimonio vem de equipamento tras os outros dados
                       'ti.nome as tipo',
                       'ma.nome as marca',
                       'mo.nome as modelo',
@@ -50,9 +51,9 @@ class EquipamentoDB extends Model
             $db->where('re.data_movimentacao', $data_movimentacao);
         }
 
-        // if ($patrimonio) {
-            // $db->where('patrimonio', 'ilike',"%$patrimonio%");
-        // }
+        if ($patrimonio) {
+            $db->where('re.patrimonio', 'ilike',"%$patrimonio%");
+        }
 
         if ($tipo) {
             $db->where('ti.nome', $tipo);
@@ -62,7 +63,7 @@ class EquipamentoDB extends Model
             $db->where('situacao', $situacao);
         }
 
-        $aDataTables = Paginacao::dataTables($db, true);
+        $aDataTables = Paginacao::dataTables($db);
 
         return $aDataTables;
     }
@@ -114,7 +115,7 @@ class EquipamentoDB extends Model
     public static function getSetor()
     {
         $sql = DB::table('setor as se')
-            ->where('fk_unidade', '=', 3)
+            // ->where('fk_unidade', '=', 3)
             ->select(['se.id','se.nome'])
             ->orderBy('se.nome')
             ->get();
@@ -137,6 +138,46 @@ class EquipamentoDB extends Model
         $sql = DB::table('servidor as se')
             ->select(['se.id','se.nome'])
             ->orderBy('se.nome')
+            ->get();
+
+        return $sql;
+    }
+
+    public static function getTipo()
+    {
+        $sql = DB::table('tipo as ti')
+            ->select(['ti.id','ti.nome'])
+            ->orderBy('ti.nome')
+            ->get();
+
+        return $sql;
+    }
+
+    public static function getMarca()
+    {
+        $sql = DB::table('marca as ma')
+            ->select(['ma.id','ma.nome'])
+            ->orderBy('ma.nome')
+            ->get();
+
+        return $sql;
+    }
+
+    public static function getModelo()
+    {
+        $sql = DB::table('modelo as mo')
+            ->select(['mo.id','mo.nome'])
+            ->orderBy('mo.nome')
+            ->get();
+
+        return $sql;
+    }
+
+    public static function getGarantia()
+    {
+        $sql = DB::table('garantia as ga')
+            ->select(['ga.id','ga.nome'])
+            ->orderBy('ga.nome')
             ->get();
 
         return $sql;

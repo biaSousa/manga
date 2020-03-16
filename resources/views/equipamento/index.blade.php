@@ -1,28 +1,24 @@
 @extends('layout.main')
 @section('conteudo')
 <section class="container-fluid">
-    <form id="form" class="form-horizontal"  action="{{url('equipamento/gridPesquisa')}}" >
+    <form id="form" class="form-horizontal"  action="{{url('equipamento/gridPesquisa')}}" onsubmit="oController.pesquisar(e)">
     <input type="hidden" name="id" id="id" class="form-control" required>
         <h3>Pesquisa de Equipamentos</h3>
         <div class="panel panel-default">
             <div class="panel-body col-md-offset-2">
                 {{csrf_field()}}
-                <div class="row">
-                    <!-- <div class="form-group">
+                <!-- <div class="row">
+                    <div class="form-group">
                         <div class="col-md-9 mr-8">
                             <div class="input-group">
                                 <input type="text" class="form-control" placeholder="Pesquisar...">
                                 <span class="input-group-btn">
-                                        <button type="button" class="btn btn-default"><i class="fa fa-search"></i></button>
+                                    <a type="button" class="btn btn-default"><i class="fa fa-search"></i></a>
                                 </span>
                             </div>
                         </div>
-                        <div class="col-md-9 mr-2">
-                            <div class="col-md-2">
-                            </div>
-                        </div>
-                    </div> -->
-                </div>
+                    </div>
+                </div> -->
                 <div class="row">
                     <div class="form-group">
                         <div class="col-md-2 mr-5">
@@ -70,7 +66,7 @@
                     <div class="form-group">
                         <div class="col-md-7 mr-5">
                             <div class="col-mr-1">
-                                <button type="submit" class="btn btn-primary" onclick="oController.pesquisar(e)">
+                                <button type="submit" class="btn btn-primary" >
                                 <i class="glyphicon glyphicon-search"></i> Pesquisar</button>
                             </div>
                         </div>

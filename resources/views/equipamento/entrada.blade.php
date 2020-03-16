@@ -1,7 +1,7 @@
 @extends('layout.main')
 @section('conteudo')
 <section class="container-fluid">
-    <form id="form" class="form-horizontal" method="get" action="{{url('equipamento/gridEntrada')}}" onsubmit="oController.pesquisar(e)">
+    <form id="form" class="form-horizontal" method="post" action="{{url('equipamento/storeEntrada')}}" onsubmit="oController.adicionar(e)">
         <h3>Entrada de Equipamento</h3>
         <div class="panel panel-default">
             <div class="panel-body col-md-offset-2">
@@ -107,6 +107,7 @@
                     </div>
                 </div>
                 <!-- BOTÃO ADICIONAR -->
+                <p>on click precisa adicionar ao grid abaixo</p>
                 <div class="row">
                     <div class="form-group">
                         <div class="col-md-7 mr-5">
@@ -148,46 +149,37 @@
                 <h4 class="modal-title" id="setorTitle">Novo - Setor</h4>
                 </div>
                 <div class="modal-body">
-                <div class="row">
-                    <div class="col-md-6 mr-5">
-                        <label for="novo_unidade">Unidade de Origem</label>
-                            <!-- <select name="novo_unidade" id="novo_unidade" class="form-control" required>
-                                <option value="">Selecione...</option>
-                                @foreach($unidade as $p)
-                                <option value="{{$p->id}}">{{$p->nome}}</option>
-                                @endforeach
-                            </select>  -->
+                    <div class="row">
+                        <div class="col-md-6 mr-5">
+                            <label for="novo_setor">Setor</label>
+                            <!-- <input type="text" class="form-control" id="novo_setor" name="novo_setor" required> -->
+                        </div>
                     </div>
-                </div>
-                <br>
-                <div class="row">
-                    <div class="col-md-6 mr-5">
-                        <!-- <label for="novo_setor">Setor</label>
-                        <input type="text" class="form-control" id="novo_setor" name="novo_setor" required> -->
-                    </div>
-                </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
                     <button type="button" class="btn btn-primary">Adicionar</button>
                 </div>
                 </div>
             </div>
         </div>
         <table id="grid" class="table table-striped table-bordered mb-3">
-                    <thead>
-                        <tr>
-                            <th width="2%">ID</th>
-                            <th width="3%">Num. Série</th>
-                            <th width="3%">Patrimonio</th>
-                            <th width="3%">Tipo</th>
-                            <th width="3%">Marca</th>
-                            <th width="3%">Modelo</th>
-                        </tr> 
+            <thead>
+                <tr>
+                    <th width="2%">ID</th>
+                    <th width="3%">Num. Série</th>
+                    <th width="3%">Patrimonio</th>
+                    <th width="3%">Tipo</th>
+                    <th width="3%">Marca</th>
+                    <th width="3%">Modelo</th>
+                </tr> 
+            </thead> 
                     </thead> 
-                    <tbody>
-                    </tbody>
-                </table>
+            </thead> 
+                    </thead> 
+            </thead> 
+            <tbody>
+            </tbody>
+        </table>
     </form>
 </section>
 

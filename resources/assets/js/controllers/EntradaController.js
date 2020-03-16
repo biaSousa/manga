@@ -10,41 +10,6 @@ class EquipamentoController {
         this._patrimonio = document.getElementById('patrimonio')
         this._table = document.querySelector('#grid tbody');
         this._token = document.querySelector('input[name="_token"]');
-        this._msgTable = "inhai bebe";
-        this.carregaGrid();
-    }
-
-    carregaGrid() {        
-        $.ajax({
-            type: 'GET',
-            url: BASE_URL+'equipamento/gridEntrada',
-            data: this._formGrid.serialize(),
-            dataType: 'json',
-            success: (response) => {
-                var data = response.data;
-                var size = data.length;
-                var linha = '';
-                
-                if(size > 0) {
-                    for(let i=0; i<size; i++){
-                        
-                        linha += `<tr>
-                            <td>${data[i].tipo_conta}</td>
-                            <td>${data[i].tipo_fonte}</td>
-                            <td>
-                                <button type="button" class="btn btn-danger btn-sm" onclick="oController.remover(${data[i].id})">
-                                    <i class="glyphicon glyphicon-trash"></i>
-                                </button>
-                            </td>
-                        </tr>`;
-                    }
-                    this._table.innerHTML = linha;
-                    }else {
-                    this._table.innerHTML = `<tr><td colspan="3" align="center">${this._msgTable}</td></tr>`;
-                    }
-                
-            }
-        });
     }
 
     carregaEquipamento()
@@ -91,8 +56,8 @@ class EquipamentoController {
             this.carregaGrid();
         }
     }
-
-    salvar(e) {
+//salvar
+    adicionar(e) {
         e.preventDefault();
         Ajax.ajax({
             url: this._form.action,

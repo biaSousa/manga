@@ -138,7 +138,6 @@
                         </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
                             <button type="submit" class="btn btn-primary">Salvar</button>
                         </div>
                         </div>
@@ -150,9 +149,9 @@
                     <div class="modal-dialog modal-dialog-centered" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <a type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
-                                </button>
+                                </a>
                                 <h4 class="modal-title" id="MarcaTitle">Novo - Marca</h4>
                             </div>
                         <div class="modal-body">
@@ -164,7 +163,6 @@
                         </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
                             <button type="submit" class="btn btn-primary">Salvar</button>
                         </div>
                         </div>
@@ -176,9 +174,9 @@
                     <div class="modal-dialog modal-dialog-centered" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <a type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
-                                </button>
+                                </a>
                                 <h4 class="modal-title" id="ModeloTitle">Novo - Modelo</h4>
                             </div>
                         <div class="modal-body">
@@ -190,7 +188,6 @@
                         </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="reset" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
                             <button type="button" class="btn btn-primary">Salvar</button>
                         </div>
                         </div>

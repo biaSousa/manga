@@ -4,7 +4,7 @@ class PesquisaController {
         this._form = document.getElementById('form');
         this._grid = document.getElementById('grid');
         // this._token = document.querySelector('input[name="_token"]');
-        this._table = document.querySelector('#grid');
+        this._table = document.querySelector('#grid tbody');
         this._msgTable = "inhai bebe";
         // this.carregaGrid();
         //never gonna give a fuck
@@ -23,7 +23,7 @@ class PesquisaController {
         $.ajax({
             type: 'get',
             url: BASE_URL+'/equipamento/gridPesquisa',
-            data: this._table.serialize(),
+            data: this._form.serialize(),
             dataType: 'json',
             success: (response) => {
                 var data = response.data;
@@ -69,6 +69,7 @@ class PesquisaController {
             }
         });
     }
+    
     // salvar() {
     //     var oValida = new ValidaForm();
 

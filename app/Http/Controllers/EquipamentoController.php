@@ -26,29 +26,24 @@ use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 class EquipamentoController extends Controller
 {
     public function index()
-    {        
-        $tipo     = Tipo::all(['id', 'nome']);
-        $marca    = Marca::all(['id', 'nome']);
-        $modelo   = Modelo::all(['id', 'nome']);
-        $unidade  = Unidade::all(['id', 'nome']);
-        $situacao = Situacao::all(['id', 'nome']);
+    {   
+        $tipo     = EquipamentoDB::getTipo();
+        $situacao = EquipamentoDB::getSituacao();
         
-        return view('equipamento.index', compact('tipo', 'marca', 'modelo', 'unidade', 'situacao'));
+        return view('equipamento.index', compact('tipo', 'situacao'));
     }
 
     //novo.blade.php
     public function novoEquipamento(Request $p)
     {        
-        $tipo     = Tipo::all(['id', 'nome']);
-        $marca    = Marca::all(['id', 'nome']);
-        $modelo   = Modelo::all(['id', 'nome']);
-        $unidade  = Unidade::all(['id', 'nome']);
-        $garantia = Garantia::all(['id', 'nome']);
-
-        //filtro, busca por patrimonio
+        $tipo     = EquipamentoDB::getTipo();
+        $marca    = EquipamentoDB::getMarca();
         // $marca = EquipamentoFiltrosDB::filtroMarcaNovoEquipamento($p);
+        $modelo   = EquipamentoDB::getModelo();
+        $unidade  = EquipamentoDB::getUnidade();
+        $garantia = EquipamentoDB::getGarantia();
 
-        // $patrimonio = EquipamentoFiltrosDB::filtroPatrimonioDadosNovoEquipamento($p);
+        // $patrimonio = EquipamentoFiltrosDB::filtroPatrimonioDadosNovoEquipamento($id);
         
         return view('equipamento.novo', compact('tipo', 'marca', 'modelo', 'unidade', 'garantia', 'patrimonio'));
     }
@@ -56,9 +51,8 @@ class EquipamentoController extends Controller
     public function equipamentoEntrada()
     {        
         //busca a partir da tabela Equipamento no grid
-        $tipo     = Tipo::all(['id', 'nome']);
-        $marca    = Marca::all(['id', 'nome']);
-        $modelo   = Modelo::all(['id', 'nome']);
+        $marca    = EquipamentoDB::getMarca();
+        $modelo   = EquipamentoDB::getModelo();
         //farm em entrada de equipamento
         $setor    = EquipamentoDB::getSetor();
         $unidade  = EquipamentoDB::getUnidade();
@@ -67,26 +61,29 @@ class EquipamentoController extends Controller
         $situacao = EquipamentoDB::getSituacao();
         
 
-        return view('equipamento.entrada', compact ( 'tipo', 'marca', 'modelo', 'setor', 'unidade', 'tecnico', 'servidor', 'situacao'));
+        return view('equipamento.entrada', compact ( 'marca', 'modelo', 'setor', 'unidade', 'tecnico', 'servidor', 'situacao'));
     }
 
     public function gridPesquisa()
     {
         $patrimonio  = request('patrimonio', null);
         $num_serie   = request('num_serie', null);
-        $tipo        = request('tipo', null);
         $situacao    = request('situacao', null);
+        $tipo        = request('tipo', null);
         $marca       = request('marca', null);
         $modelo      = request('modelo', null);
         $tecnico     = request('tecnico', null);
         $servidor    = request('servidor', null);
         $setor       = request('setor', null);
         $unidade     = request('unidade', null);
-        $num_movimentacao  = request('num_movimentacao', null);
         $data_movimentacao = request('data_movimentacao', null);
+        $num_movimentacao  = request('num_movimentacao', null);
+
+        return ['colunas' => EquipamentoDB::gridPesquisa($patrimonio, $num_serie, $situacao, $tipo, $marca, $modelo,
+         $tecnico, $servidor, $setor, $unidade, $data_movimentacao, $num_movimentacao)];
         
-        return Paginacao::dataTables(EquipamentoDB::gridPesquisa($patrimonio, $num_serie, $situacao, $tipo, $marca, $modelo,
-         $tecnico, $servidor, $setor, $unidade, $data_movimentacao, $num_movimentacao), true, true);
+        // return Paginacao::dataTables(EquipamentoDB::gridPesquisa($patrimonio, $num_serie, $situacao, $tipo, $marca, $modelo,
+        //  $tecnico, $servidor, $setor, $unidade, $data_movimentacao, $num_movimentacao));
     }
 
     public function gridEntrada()
@@ -101,7 +98,7 @@ class EquipamentoController extends Controller
     } 
 
   
-    //salva novo equipamento com updateOrCreate NOVO
+    //salva novo equipamento
     public function createNovoEquipamento(Request $request)
     {
         DB::beginTransaction();
@@ -146,7 +143,7 @@ class EquipamentoController extends Controller
         }
     }
 
-    //salva  nova entrada NOVO
+    //salva entrada 
     public function createEquipamentoEntrada(Request $request)
     {
         DB::beginTransaction();
@@ -174,17 +171,17 @@ class EquipamentoController extends Controller
 
             //encontrar id da linha antes de salvar
             $oEquipamento = Equipamento::updateOrCreate([
-                'fk_setor'    => $request->get('setor'), //novo_setor
+                'fk_setor'    => $request->get('novo_setor'), //novo_setor
                 'fk_unidade'  => $request->get('unidade'),
             ]);
 
             $oSetorUnidade = SetorUnidade::updateOrCreate([
-                'fk_setor'    => $request->get('setor'), //novo_setor
+                'fk_setor'    => $request->get('novo_setor'), //novo_setor
                 'fk_unidade'  => $request->get('unidade'),
             ]);
 
             $oSetor = Setor::updateOrCreate([
-                'nome'        => $request->get('setor'), //novo_setor
+                'nome'        => $request->get('novo_setor'), //novo_setor
                 'fk_unidade'  => $request->get('unidade'),
             ]);
 
