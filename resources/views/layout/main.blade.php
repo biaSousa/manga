@@ -172,7 +172,15 @@
             color: white;
             text-align: center;
         }
-        
+
+        button[type=button] {
+            box-shadow: none;
+            border-radius: 6px;
+            background-color: #1f996c;
+            border-color: #ffffff;
+            font-size: 16px;
+        }   
+
         button[type=submit] {
             box-shadow: none;
             border-radius: 6px;
@@ -187,6 +195,11 @@
             background-color: #1f996c;
             border-color: #ffffff;
             font-size: 16px;
+        }
+                
+        button[type=button]:hover {
+            background-color: #29c68c;
+            border-color: #ffffff;
         }
         
         button[type=submit]:hover {

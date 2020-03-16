@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\Model;
 class EquipamentoDB extends Model
 {
     //index.blade.php
-    public static function gridPesquisa($num_serie = null, $num_mov = null, $data_mov = null, $patrimonio = null, $tipo = null, $situacao = null)
+    public static function gridPesquisa($num_serie = null, $num_movimentacao = null, $data_movimentacao = null, $patrimonio = null, $tipo = null, $situacao = null)
     {
         $db = DB::table('recebimento as re')
             ->join('tipo as ti', 're.fk_tipo', '=', 'ti.id')
@@ -26,8 +26,8 @@ class EquipamentoDB extends Model
             ->join('situacao as sit', 're.fk_situacao', '=', 'sit.id')
             ->select(['re.id',
                       're.num_serie',
-                      're.num_movimentacao as num_mov',
-                      're.data_movimentacao as data_mov',
+                      're.num_movimentacao',
+                      're.data_movimentacao',
                       're.patrimonio', //patrimonio vem de equipamento
                       'ti.nome as tipo',
                       'ma.nome as marca',
@@ -39,19 +39,19 @@ class EquipamentoDB extends Model
             ]);
 
         if ($num_serie) {
-            $db->where('num_serie', $num_serie);
+            $db->where('re.num_serie', $num_serie);
         }
 
-        if ($num_mov) {
-            $db->where('num_mov', $num_mov);
+        if ($num_movimentacao) {
+            $db->where('re.num_movimentacao', $num_movimentacao);
         }
 
-        if ($data_mov) {
-            $db->where('data_mov', $data_mov);
+        if ($data_movimentacao) {
+            $db->where('re.data_movimentacao', $data_movimentacao);
         }
 
         // if ($patrimonio) {
-        //     $db->where('patrimonio', 'ilike',"%$patrimonio%");
+            // $db->where('patrimonio', 'ilike',"%$patrimonio%");
         // }
 
         if ($tipo) {
@@ -68,7 +68,7 @@ class EquipamentoDB extends Model
     }
      
     //entrada.blade.php
-    public static function gridEntrada()
+    public static function gridAdicionaEntrada($tipo = null, $marca = null, $modelo = null, $num_serie = null, $patrimonio = null)
     {
         $sql = DB::table('equipamento as e')
             ->join('tipo as ti', 'e.fk_tipo', '=', 'ti.id')
@@ -76,24 +76,69 @@ class EquipamentoDB extends Model
             ->join('modelo as mo', 'e.fk_modelo', '=', 'mo.id')
             ->select(['e.id', 
                       'e.num_serie', 
-                      'e.patrimonio'])
+                      'e.patrimonio',
+                      'ti.nome as tipo',
+                      'ma.nome as marca',
+                      'mo.nome as modelo'])
             ->orderBy('e.id')
+            ->get();
+
+            if ($tipo) {
+                $sql->where('tipo', $tipo);
+            }  
+
+            $aDataTables = Paginacao::dataTables($sql, true);
+
+            return $aDataTables;
+    }
+    public static function getSituacao()
+    {
+        $sql = DB::table('situacao as sit')
+            ->select(['sit.id','sit.nome'])
+            ->orderBy('sit.nome')
+            ->get();
+
+        return $sql;
+    }
+
+    public static function getUnidade()
+    {
+        $sql = DB::table('unidade as un')
+            ->select(['un.id','un.nome'])
+            ->orderBy('un.nome')
             ->get();
 
         return $sql;
     }
     
-    // public static function getEventoByResp($id)
-    // {
-    //     $evento = DB::table('fontes_conta as fc')
-    //         ->join('tipo_evento as te', 'e.fk_tipo_evento', '=', 'te.id')
-    //         ->join('tipo_curso as tc', 'e.fk_tipo_curso', '=', 'tc.id')
-    //         ->join('realizadores as r', 'fc.fk_realizadores', '=', 'r.id')
-    //         ->where('e.fk_tipo_evento', $id)
-    //         ->select(['r.nome'])
-    //         ->orderBy('r.nome')
-    //         ->get();
+    public static function getSetor()
+    {
+        $sql = DB::table('setor as se')
+            ->where('fk_unidade', '=', 3)
+            ->select(['se.id','se.nome'])
+            ->orderBy('se.nome')
+            ->get();
 
-    //     return $evento;
-    // }
+        return $sql;
+    }
+
+    public static function getTecnico()
+    {
+        $sql = DB::table('tecnico as te')
+            ->select(['te.id','te.nome'])
+            ->orderBy('te.nome')
+            ->get();
+
+        return $sql;
+    }
+
+    public static function getServidor()
+    {
+        $sql = DB::table('servidor as se')
+            ->select(['se.id','se.nome'])
+            ->orderBy('se.nome')
+            ->get();
+
+        return $sql;
+    }
 }

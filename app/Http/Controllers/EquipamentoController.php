@@ -20,6 +20,7 @@ use App\Models\Facade\EquipamentoDB;
 use App\Models\Facade\EquipamentoFiltrosDB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use App\Models\Paginacao;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 class EquipamentoController extends Controller
@@ -45,23 +46,28 @@ class EquipamentoController extends Controller
         $garantia = Garantia::all(['id', 'nome']);
 
         //filtro, busca por patrimonio
-        $patrimonio = EquipamentoFiltrosDB::filtroPatrimonioDadosNovoEquipamento($p);
+        // $marca = EquipamentoFiltrosDB::filtroMarcaNovoEquipamento($p);
+
+        // $patrimonio = EquipamentoFiltrosDB::filtroPatrimonioDadosNovoEquipamento($p);
         
         return view('equipamento.novo', compact('tipo', 'marca', 'modelo', 'unidade', 'garantia', 'patrimonio'));
     }
 
     public function equipamentoEntrada()
     {        
+        //busca a partir da tabela Equipamento no grid
         $tipo     = Tipo::all(['id', 'nome']);
         $marca    = Marca::all(['id', 'nome']);
-        $setor    = Setor::all(['id', 'nome']);
         $modelo   = Modelo::all(['id', 'nome']);
-        $unidade  = Unidade::all(['id', 'nome']);
-        $tecnico  = Tecnico::all(['id', 'nome']);
-        $servidor = Servidor::all(['id', 'nome']);
-        $situacao = Situacao::all(['id', 'nome']);
+        //farm em entrada de equipamento
+        $setor    = EquipamentoDB::getSetor();
+        $unidade  = EquipamentoDB::getUnidade();
+        $tecnico  = EquipamentoDB::getTecnico();
+        $servidor = EquipamentoDB::getServidor();
+        $situacao = EquipamentoDB::getSituacao();
         
-        return view('equipamento.entrada', compact ( 'tipo', 'marca', 'setor', 'modelo', 'unidade', 'tecnico', 'servidor', 'situacao'));
+
+        return view('equipamento.entrada', compact ( 'tipo', 'marca', 'modelo', 'setor', 'unidade', 'tecnico', 'servidor', 'situacao'));
     }
 
     public function gridPesquisa()
@@ -72,16 +78,28 @@ class EquipamentoController extends Controller
         $situacao    = request('situacao', null);
         $marca       = request('marca', null);
         $modelo      = request('modelo', null);
-        $data_mov    = request('data_mov', null);
-        $num_mov     = request('num_mov', null);
         $tecnico     = request('tecnico', null);
         $servidor    = request('servidor', null);
         $setor       = request('setor', null);
         $unidade     = request('unidade', null);
+        $num_movimentacao  = request('num_movimentacao', null);
+        $data_movimentacao = request('data_movimentacao', null);
         
-        return response()->json(EquipamentoDB::gridPesquisa($patrimonio, $num_serie, $situacao, $tipo, $marca, $modelo, $data_mov,
-        $num_mov, $tecnico, $servidor, $setor, $unidade));
+        return Paginacao::dataTables(EquipamentoDB::gridPesquisa($patrimonio, $num_serie, $situacao, $tipo, $marca, $modelo,
+         $tecnico, $servidor, $setor, $unidade, $data_movimentacao, $num_movimentacao), true, true);
+    }
+
+    public function gridEntrada()
+    {
+        $tipo       = request('tipo', null);
+        $marca      = request('marca', null);
+        $modelo     = request('modelo', null);
+        $num_serie  = request('num_serie', null);
+        $patrimonio = request('patrimonio', null);
+        
+        return response()->json(EquipamentoDB::gridAdicionaEntrada($tipo, $marca, $modelo, $num_serie, $patrimonio));
     } 
+
   
     //salva novo equipamento com updateOrCreate NOVO
     public function createNovoEquipamento(Request $request)
@@ -103,24 +121,22 @@ class EquipamentoController extends Controller
                 'data_compra'=> $request->get('data_compra')
             ]);
 
+            $oTipo = Tipo::updateOrCreate([
+                'nome'      => $request->get('tipo')
+            ]);
 
-            // $oEquipamentoTipo = Tipo::firstOrCreate([
-            //     'id'=>$id,
-            //     'tipo'=>$fk_tipo
-            // ]);
+            $oMarca = Marca::updateOrCreate([
+                'nome'      => $request->get('marca'), 
+                'fk_tipo'   => $request->get('tipo')
+            ]);
 
-            // if($oEquipamentoTipo->wasRecentlyCreated){
-            //     echo 'Foi salvo';
-            // } else {
-            //     echo 'Não foi salvo';
-            // }
+            $oModelo = Modelo::updateOrCreate([
+                'nome'      => $request->get('modelo'), 
+                'fk_marca'  => $request->get('marca')
+            ]);
 
-            //tipo   -> tipo
-            //marca  -> tipo / marca 
-            //modelo -> marca / modelo
             $p = (object) $request->all();
 
-            $oEquipamento->save();
             DB::commit();
 
             return response()->json(array('msg' => 'Equipamento cadastrado com sucesso.'));
@@ -135,17 +151,26 @@ class EquipamentoController extends Controller
     {
         DB::beginTransaction();
         try{
+
             $oEntrada = Recebimento::updateOrCreate([
-            'fk_setor'     => $request->get('setor'),
-            'fk_unidade'   => $request->get('unidade'),
-            'fk_tecnico'   => $request->get('tecnico'),
-            'fk_servidor'  => $request->get('servidor'),
-            'fk_situacao'  => $request->get('fk_situacao'),
-            'telefone'     => $request->get('telefone', null),
-            'descricao'    => $request->get('descricao', null),
-            'num_movimentacao'  => $request->get('num_movimentacao'),
-            'data_movimentacao' => $request->get('data_movimentacao')
-            ]);
+                
+                //ao adicionar, buscao em Equipamento o id
+                'fk_unidade'   => $request->get('unidade'),
+                'fk_tecnico'   => $request->get('tecnico'),
+                'fk_servidor'  => $request->get('servidor'),
+                'fk_situacao'  => $request->get('situacao'),
+                'telefone'     => $request->get('telefone', null),
+                'descricao'    => $request->get('descricao', null),
+                'num_movimentacao'  => $request->get('num_movimentacao'),
+                'data_movimentacao' => $request->get('data_movimentacao'),
+                //trazer do num_movimentacao
+                'fk_tipo'      => $request->get('tipo'),
+                'fk_setor'     => $request->get('setor'),
+                'fk_marca'     => $request->get('marca'),
+                'fk_modelo'    => $request->get('modelo'),
+                'num_serie'    => $request->get('num_serie'), 
+                'patrimonio'   => $request->get('patrimonio')
+                ]);
 
             //encontrar id da linha antes de salvar
             $oEquipamento = Equipamento::updateOrCreate([
@@ -165,9 +190,6 @@ class EquipamentoController extends Controller
 
 
         $p = (object) $request->all();
-        // dd($request->all());
-
-        $oEntrada->save();
 
         DB::commit();
 
@@ -177,10 +199,5 @@ class EquipamentoController extends Controller
             return response()->json(array('msg' => $e->getMessage()), 422);
         }
     }    
-
-    // public function equipamentoSaida()
-    // {        
-    //     return view('equipamento.saida');
-    // }
 
 }

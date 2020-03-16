@@ -41,7 +41,7 @@ class EquipamentoFiltrosDB extends Model
 
     //novo.blade.php
     //patrimonio lido do codigo de barras carrega dados
-    public static function filtroPatrimonioDadosNovoEquipamento($p)
+    public static function filtroPatrimonioDadosNovoEquipamento($id)
     {
         $sql = DB::table('equipamento as eq')
             ->join('setor as se', 'eq.fk_setor', '=', 'se.id')
@@ -50,7 +50,7 @@ class EquipamentoFiltrosDB extends Model
             ->join('marca as ma', 'eq.fk_marca', '=', 'ma.id')
             ->join('modelo as mo', 'eq.fk_modelo', '=', 'mo.id')
             ->join('garantia as ga', 'eq.fk_garantia', '=', 'ga.id')
-            ->where('eq.patrimonio', $p)
+            ->where('eq.patrimonio', $id)
             ->select(['eq.id',
                       'eq.num_serie',
                       'eq.data_compra',
@@ -61,8 +61,8 @@ class EquipamentoFiltrosDB extends Model
                       'eq.fk_tipo',
                       'eq.fk_modelo',
                       'eq.fk_marca',
-                      'eq.fk_garantia'
-            ]);
+                      'eq.fk_garantia'])
+            ->get();
 
         return $sql; 
     }

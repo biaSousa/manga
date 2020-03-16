@@ -18,8 +18,8 @@
                                 @endforeach
                             </select>
                             <span class="input-group-btn">
-                                <button type="button" class="btn btn-default" data-toggle="modal" data-target="#modalTipoEquipamento">
-                                <i class="glyphicon glyphicon-plus"></i></button>
+                                <a class="btn btn-default" data-toggle="modal" data-target="#modalTipoEquipamento">
+                                <i class="glyphicon glyphicon-plus"></i></a>
                             </span>
                         </div> 
                     </div> 
@@ -45,8 +45,8 @@
                                     @endforeach
                                 </select>
                                 <span class="input-group-btn">
-                                    <button type="button" class="btn btn-default" data-toggle="modal" data-target="#modalMarca">
-                                    <i class="glyphicon glyphicon-plus"></i></button>
+                                    <a class="btn btn-default" data-toggle="modal" data-target="#modalMarca">
+                                    <i class="glyphicon glyphicon-plus"></i></a>
                                 </span>
                             </div> 
                         </div> 
@@ -77,8 +77,8 @@
                                     @endforeach
                                 </select>
                                 <span class="input-group-btn">
-                                    <button type="button" class="btn btn-default" data-toggle="modal" data-target="#modalModelo">
-                                    <i class="glyphicon glyphicon-plus"></i></button>
+                                    <a class="btn btn-default" data-toggle="modal" data-target="#modalModelo">
+                                    <i class="glyphicon glyphicon-plus"></i></a>
                                 </span>
                             </div>
                         </div>
@@ -104,7 +104,7 @@
                         </div>
                     </div>
                 </div>
-                <!-- Botão Adicionar -->
+                <!-- Botão Salvar -->
                 <div class="row">
                     <div class="form-group">
                         <div class="col-md-7 mr-5">
@@ -124,16 +124,16 @@
                     <div class="modal-dialog modal-dialog-centered" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <a class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
-                                </button>
+                                </a>
                                 <h4 class="modal-title" id="TipoTitle">Novo - Tipo de Equipamento</h4>
                             </div>
                         <div class="modal-body">
                         <div class="row">
                             <div class="col-md-6 mr-5">
-                                <!-- <label for="novo_tipo">Tipo</label>
-                                <input type="text" class="form-control" id="novo_tipo" name="novo_tipo" required> -->
+                                <label for="novo_tipo">Tipo</label>
+                                <input type="text" class="form-control" id="novo_tipo" name="novo_tipo" required>
                             </div>
                         </div>
                         </div>
@@ -158,8 +158,8 @@
                         <div class="modal-body">
                         <div class="row">
                             <div class="col-md-6 mr-5">
-                                <!-- <label for="novo_marca">Marca</label>
-                                <input type="text" class="form-control" id="novo_marca" name="novo_marca" required> -->
+                                <label for="novo_marca">Marca</label>
+                                <input type="text" class="form-control" id="novo_marca" name="novo_marca" required>
                             </div>
                         </div>
                         </div>
@@ -184,14 +184,14 @@
                         <div class="modal-body">
                         <div class="row">
                             <div class="col-md-6 mr-5">
-                                <!-- <label for="novo_modelo">Modelo</label>
-                                <input type="text" class="form-control" id="novo_modelo" name="novo_modelo" required> -->
+                                <label for="novo_modelo">Modelo</label>
+                                <input type="text" class="form-control" id="novo_modelo" name="novo_modelo" required>
                             </div>
                         </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-                            <button type="submit" class="btn btn-primary">Salvar</button>
+                            <button type="reset" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                            <button type="button" class="btn btn-primary">Salvar</button>
                         </div>
                         </div>
                     </div>

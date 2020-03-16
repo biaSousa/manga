@@ -134,7 +134,7 @@
 <script src="{{asset('js/app/helpers/GenericModalForm.js')}}"></script>
 <script src="{{asset('js/app/controllers/PesquisaController.js')}}"></script>
 @include('layout.datatables', ['carregamento_inicial' => true, 'colunas' => ['id', 'patrimonio', 'num_serie', 'tipo', 'situacao', 'marca',
- 'modelo', 'data_mov', 'num_mov', 'tecnico', 'servidor', 'setor', 'unidade']])
+ 'modelo', 'data_movimentacao', 'num_movimentacao', 'tecnico', 'servidor', 'setor', 'unidade']])
 <script>
     var oController = new PesquisaController();
 </script>

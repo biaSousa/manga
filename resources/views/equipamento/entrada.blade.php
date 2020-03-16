@@ -1,7 +1,7 @@
 @extends('layout.main')
 @section('conteudo')
 <section class="container-fluid">
-    <form id="form" class="form-horizontal" method="POST" action="{{url('equipamento/storeEntrada')}}" onsubmit="oController.salvar(e)">
+    <form id="form" class="form-horizontal" method="get" action="{{url('equipamento/gridEntrada')}}" onsubmit="oController.pesquisar(e)">
         <h3>Entrada de Equipamento</h3>
         <div class="panel panel-default">
             <div class="panel-body col-md-offset-2">
@@ -66,8 +66,8 @@
                                     @endforeach
                                 </select>
                                 <span class="input-group-btn">
-                                    <button type="button" class="btn btn-default" data-toggle="modal" data-target="#modalSetor">
-                                    <i class="glyphicon glyphicon-plus"></i></button>
+                                    <a class="btn btn-default" data-toggle="modal" data-target="#modalSetor">
+                                    <i class="glyphicon glyphicon-plus"></i></a>
                                 </span>
                             </div>
                         </div>
@@ -99,11 +99,10 @@
                         </div>
                     </div>
                 </div>
-                ADICIONAR GRID<br>
                 <div class="row">
                     <div class="form-group">
                         <div class="col-md-3 mr-8">
-                            <textarea id="descricao" name="descricao" rows="8" cols="90" placeholder="Descreva a observação..."></textarea>
+                            <textarea id="descricao" name="descricao" rows="4" cols="50" placeholder="Descreva a observação..."></textarea>
                         </div>
                     </div>
                 </div>
@@ -112,7 +111,7 @@
                     <div class="form-group">
                         <div class="col-md-7 mr-5">
                             <div class="col-mr-1">
-                                <button type="submit" class="btn btn-primary"><i class="glyphicon glyphicon-floppy-disk"></i> Salvar</button>
+                                <button type="submit" class="btn btn-primary"><i class="glyphicon glyphicon-cloud-download"></i> Adicionar</button>
                             </div>
                         </div>
                         <div class="col-md-1 mr-5">
@@ -122,6 +121,7 @@
                         </div>
                     </div>
                 </div>
+                <!-- Snackbar -->
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="form-group">
@@ -140,25 +140,25 @@
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <a class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
-                    </button>
+                    </a>
                 <form id="modal_setor" action="{{ url('contact')}}" method="POST">
                 {{ csrf_field() }}
                 <h4 class="modal-title" id="setorTitle">Novo - Setor</h4>
                 </div>
                 <div class="modal-body">
-                <!-- <div class="row">
+                <div class="row">
                     <div class="col-md-6 mr-5">
                         <label for="novo_unidade">Unidade de Origem</label>
-                            <select name="novo_unidade" id="novo_unidade" class="form-control" required>
+                            <!-- <select name="novo_unidade" id="novo_unidade" class="form-control" required>
                                 <option value="">Selecione...</option>
                                 @foreach($unidade as $p)
                                 <option value="{{$p->id}}">{{$p->nome}}</option>
                                 @endforeach
-                            </select>
+                            </select>  -->
                     </div>
-                </div> -->
+                </div>
                 <br>
                 <div class="row">
                     <div class="col-md-6 mr-5">
@@ -169,12 +169,25 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-                    <button type="submit" class="btn btn-primary">Adicionar</button>
+                    <button type="button" class="btn btn-primary">Adicionar</button>
                 </div>
                 </div>
             </div>
         </div>
-
+        <table id="grid" class="table table-striped table-bordered mb-3">
+                    <thead>
+                        <tr>
+                            <th width="2%">ID</th>
+                            <th width="3%">Num. Série</th>
+                            <th width="3%">Patrimonio</th>
+                            <th width="3%">Tipo</th>
+                            <th width="3%">Marca</th>
+                            <th width="3%">Modelo</th>
+                        </tr> 
+                    </thead> 
+                    <tbody>
+                    </tbody>
+                </table>
     </form>
 </section>
 
@@ -188,8 +201,9 @@
 <script src="{{asset('js/app/views/MensagemView.js')}}"></script>
 <script src="{{asset('js/app/models/ValidaForm.js')}}"></script>
 <script src="{{asset('js/app/helpers/GenericModalForm.js')}}"></script>
-<script src="{{asset('js/app/controllers/EquipamentoController.js')}}"></script>
+<script src="{{asset('js/app/controllers/EntradaController.js')}}"></script>
+@include('layout.datatables', ['carregamento_inicial' => true, 'colunas' => ['id', 'tipo', 'marca', 'modelo', 'num_serie', 'patrimonio']])
 <script>
-    var oController = new EquipamentoController();
+    var oController = new EntradaController();
 </script>
 @endsection

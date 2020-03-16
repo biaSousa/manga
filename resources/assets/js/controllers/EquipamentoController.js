@@ -17,16 +17,25 @@ class EquipamentoController {
         this._formGrid = document.getElementById('formulario');
         this._token = document.querySelector('input[name="_token"]');
         this._table = document.querySelector('#grid tbody');
-        this._msgTable = "inhai bebe";
+        this._msgTable = "Não funcionou";
         this.carregaGrid();
     }
 
-    //by patrimonio/num_serie show dados do equipamento
+    // $('#save').on('click', function() {
+    //     $('#value').text( $('#newGoal').val() );
+    //   });
+
+    //patrimonio/num_serie show dados do equipamento
     eventoEnter(event) {
         if(event.key === 'Enter') {
             this.carregaPatrimonio();
         }
     }
+
+    pesquisar(e) {
+        e.preventDefault();
+        this._table.draw();
+    }  
 
     carregaPatrimonio()
     {
@@ -40,7 +49,7 @@ class EquipamentoController {
         this._notafiscal.value = '';
 
         Ajax.ajax({
-            url: this._patrimonio.dataset.url,
+            url: this._form.dataset.url,
             data: {patrimonio: this._patrimonio.value},
             success: (e) => {
                 if(e.id) {
@@ -76,15 +85,15 @@ class EquipamentoController {
     }
 
     adicionarEquipamento() {
-        if (!this._perfil.value) return;
+        if (!this._equipamento.value) return;
 
-        if (this._grid.querySelectorAll(`tbody tr[id="${this._perfil.value}"]`).length > 0) {
+        if (this._grid.querySelectorAll(`tbody tr[id="${this._equipamento.value}"]`).length > 0) {
             return false;
         }
 
         oTable.row.add({
-            'DT_RowId': this._perfil.value,
-            'perfil': this._perfil.options[this._perfil.selectedIndex].text + '<input type="hidden" value="' + this._perfil.value + '" name="perfil[]">'
+            'DT_RowId': this._equipamento.value,
+            'perfil': this._equipamento.options[this._equipamento.selectedIndex].text + '<input type="hidden" value="' + this._equipamento.value + '" name="perfil[]">'
         }).draw();
     }
 
@@ -95,7 +104,7 @@ class EquipamentoController {
     carregaGrid() {        
         $.ajax({
             type: 'GET',
-            url: BASE_URL+'/equipamento/grid',
+            url: BASE_URL+'/equipamento/gridPesquisa',
             data: this._formGrid.serialize(),
             dataType: 'json',
             success: (response) => {
