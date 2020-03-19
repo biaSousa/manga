@@ -9,7 +9,7 @@
                 <div class="row">
                     <div class="form-group">
                     <div class="col-md-3 mr-5">
-                        <label for="nome">Tipo de Equipamento</label>
+                        <label for="tipo">Tipo de Equipamento</label>
                         <div class="input-group">
                             <select name="tipo" id="tipo" class="form-control custom-select" required>
                                 <option value="">Selecione...</option>
@@ -109,7 +109,8 @@
                     <div class="form-group">
                         <div class="col-md-7 mr-5">
                             <div class="col-mr-1">
-                                <button type="submit" class="btn btn-primary"><i class="glyphicon glyphicon-floppy-disk"></i> Salvar</button>
+                                <button type="submit" class="btn btn-primary" id="adicionar" onclick="oController.adicionarEquipamento()">
+                                <i class="glyphicon glyphicon-plus"></i> Adicionar</button>
                             </div>
                         </div>
                         <div class="col-md-1 mr-5">
@@ -132,13 +133,13 @@
                         <div class="modal-body">
                         <div class="row">
                             <div class="col-md-6 mr-5">
-                                <label for="novo_tipo">Tipo</label>
-                                <input type="text" class="form-control" id="novo_tipo" name="novo_tipo" required>
+                                <!-- <label for="novo_tipo">Tipo</label>
+                                <input type="text" class="form-control" id="novo_tipo" name="novo_tipo" required> -->
                             </div>
                         </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="submit" class="btn btn-primary">Salvar</button>
+                           <button type="button" class="btn btn-primary">Salvar</button>
                         </div>
                         </div>
                     </div>
@@ -155,15 +156,15 @@
                                 <h4 class="modal-title" id="MarcaTitle">Novo - Marca</h4>
                             </div>
                         <div class="modal-body">
-                        <div class="row">
-                            <div class="col-md-6 mr-5">
-                                <label for="novo_marca">Marca</label>
-                                <input type="text" class="form-control" id="novo_marca" name="novo_marca" required>
+                            <div class="row">
+                                <div class="col-md-6 mr-5">
+                                    <!-- <label for="novo_marca">Marca</label>
+                                    <input type="text" class="form-control" id="novo_marca" name="novo_marca" required> -->
+                                </div>
                             </div>
                         </div>
-                        </div>
                         <div class="modal-footer">
-                            <button type="submit" class="btn btn-primary">Salvar</button>
+                            <button type="button" class="btn btn-primary">Salvar</button>
                         </div>
                         </div>
                     </div>
@@ -182,8 +183,8 @@
                         <div class="modal-body">
                         <div class="row">
                             <div class="col-md-6 mr-5">
-                                <label for="novo_modelo">Modelo</label>
-                                <input type="text" class="form-control" id="novo_modelo" name="novo_modelo" required>
+                                <!-- <label for="novo_modelo">Modelo</label>
+                                <input type="text" class="form-control" id="novo_modelo" name="novo_modelo" required> -->
                             </div>
                         </div>
                         </div>
@@ -211,21 +212,28 @@
                 </div>
             </div>
             </div>
+        </div> -->
+        <div class="col-md-12 mr-5">
+            <div class="form-group">
+                <div id="equipamento">
+                    <table id="grid" class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th width="3%">ID</th>
+                                <th width="8%">Tipo</th>
+                                <th width="8%">Modelo</th>
+                                <th width="8%">Marca</th>
+                                <th width="5%">Num. Série</th>
+                                <th width="5%">Patrimonio</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
-        <table id="grid" class="table table-striped table-bordered mb-3">
-        <thead>
-            <tr>
-                <th width="3%">ID</th>
-                <th width="8%">Tipo</th>
-                <th width="8%">Modelo</th>
-                <th width="8%">Marca</th>
-                <th width="5%">Num. Série</th>
-                <th width="5%">Patrimonio</th>
-            </tr> 
-            </thead> 
-            <tbody>
-            </tbody>
-        </table> -->
+        <br>
 </form>
 </section>
 

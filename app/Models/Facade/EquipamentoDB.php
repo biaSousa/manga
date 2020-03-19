@@ -28,8 +28,8 @@ class EquipamentoDB extends Model
             ->select(['re.id',
                       're.num_serie',
                       're.num_movimentacao',
-                      're.data_movimentacao',
-                      're.patrimonio', //patrimonio vem de equipamento tras os outros dados
+                    //   're.data_movimentacao',
+                    //   're.patrimonio', //patrimonio vem de equipamento 
                       'ti.nome as tipo',
                       'ma.nome as marca',
                       'mo.nome as modelo',
@@ -60,28 +60,84 @@ class EquipamentoDB extends Model
         }
 
         if ($situacao) {
-            $db->where('situacao', $situacao);
+            $db->where('sit.situacao', $situacao);
         }
 
         $aDataTables = Paginacao::dataTables($db);
 
         return $aDataTables;
     }
+
+    public static function gridPesquisaa($p)
+    {
+        $sql= DB::table('recebimento as re') 
+                ->join('marca as ma',   're.fk_marca', '=', 'ma.id')
+                ->join('modelo as mo',  're.fk_modelo', '=', 'mo.id')
+                ->join('tipo as ti',    're.fk_tipo', '=', 'ti.id')
+                ->join('setor as se',   're.fk_setor', '=', 'se.id')
+                ->join('unidade as un', 're.fk_unidade', '=', 'un.id')
+                ->join('situacao as si','re.fk_situacao', '=', 'si.id')
+                ->join('tecnico as tec','re.fk_tecnico', '=', 'tec.id')
+                ->join('servidor as ser','re.fk_servidor', '=', 'ser.id')
+
+                ->select(['re.id',
+                          're.data_movimentacao',
+                          're.num_movimentacao',
+                          're.patrimonio',
+                          'mo.nome as modelo',
+                          'ma.nome as marca',
+                          'ti.nome as tipo',
+                          'se.nome as setor',
+                          'un.nome as unidade',
+                          'si.nome as situacao',
+                          'tec.nome as tecnico',
+                          'ser.nome as servidor']);
+
+        if ($p->$patrimonio) {
+            $sql->where('re.patrimonio', $p->patrimonio);
+        }
+
+        if ($p->$num_serie) {
+            $sql->where('re.num_serie', $p->num_serie);
+        }
+
+        if ($p->$num_movimentacao) {
+            $sql->where('re.num_movimentacao', $p->num_movimentacao);
+        }
+
+        if ($p->$tipo) {
+            $sql->where('re.fk_tipo', $p->tipo);
+        }
+
+        if ($p->$situacao) {
+            $sql->where('re.fk_situacao', $p->situacao);
+        }
+
+        if ($p->$unidade) {
+            $sql->where('re.fk_unidade', $p->unidade);
+        }
+
+        $db->orderBy('re.id');
+        $db->orderBy('re.num_serie', 'ASC');
+        
+        return $db;
+    }
      
     //entrada.blade.php
     public static function gridAdicionaEntrada($tipo = null, $marca = null, $modelo = null, $num_serie = null, $patrimonio = null)
+    // public static function gridAdicionaEntrada($p)
     {
-        $sql = DB::table('equipamento as e')
-            ->join('tipo as ti', 'e.fk_tipo', '=', 'ti.id')
-            ->join('marca as ma', 'e.fk_marca', '=', 'ma.id')
-            ->join('modelo as mo', 'e.fk_modelo', '=', 'mo.id')
-            ->select(['e.id', 
-                      'e.num_serie', 
-                      'e.patrimonio',
+        $sql = DB::table('equipamento as eq')
+            ->join('tipo as ti', 'eq.fk_tipo', '=', 'ti.id')
+            ->join('marca as ma', 'eq.fk_marca', '=', 'ma.id')
+            ->join('modelo as mo', 'eq.fk_modelo', '=', 'mo.id')
+            ->select(['eq.id', 
+                      'eq.num_serie', 
+                      'eq.patrimonio',
                       'ti.nome as tipo',
                       'ma.nome as marca',
                       'mo.nome as modelo'])
-            ->orderBy('e.id')
+            ->orderBy('eq.id')
             ->get();
 
             if ($tipo) {
@@ -96,7 +152,7 @@ class EquipamentoDB extends Model
     {
         $sql = DB::table('situacao as sit')
             ->select(['sit.id','sit.nome'])
-            ->orderBy('sit.nome')
+            ->orderBy('sit.id')
             ->get();
 
         return $sql;
@@ -106,7 +162,7 @@ class EquipamentoDB extends Model
     {
         $sql = DB::table('unidade as un')
             ->select(['un.id','un.nome'])
-            ->orderBy('un.nome')
+            ->orderBy('un.id')
             ->get();
 
         return $sql;
@@ -117,7 +173,7 @@ class EquipamentoDB extends Model
         $sql = DB::table('setor as se')
             // ->where('fk_unidade', '=', 3)
             ->select(['se.id','se.nome'])
-            ->orderBy('se.nome')
+            ->orderBy('se.id')
             ->get();
 
         return $sql;
@@ -127,7 +183,7 @@ class EquipamentoDB extends Model
     {
         $sql = DB::table('tecnico as te')
             ->select(['te.id','te.nome'])
-            ->orderBy('te.nome')
+            ->orderBy('te.id')
             ->get();
 
         return $sql;
@@ -137,7 +193,7 @@ class EquipamentoDB extends Model
     {
         $sql = DB::table('servidor as se')
             ->select(['se.id','se.nome'])
-            ->orderBy('se.nome')
+            ->orderBy('se.id')
             ->get();
 
         return $sql;
@@ -147,7 +203,7 @@ class EquipamentoDB extends Model
     {
         $sql = DB::table('tipo as ti')
             ->select(['ti.id','ti.nome'])
-            ->orderBy('ti.nome')
+            ->orderBy('ti.id')
             ->get();
 
         return $sql;
@@ -157,7 +213,7 @@ class EquipamentoDB extends Model
     {
         $sql = DB::table('marca as ma')
             ->select(['ma.id','ma.nome'])
-            ->orderBy('ma.nome')
+            ->orderBy('ma.id')
             ->get();
 
         return $sql;
@@ -167,7 +223,7 @@ class EquipamentoDB extends Model
     {
         $sql = DB::table('modelo as mo')
             ->select(['mo.id','mo.nome'])
-            ->orderBy('mo.nome')
+            ->orderBy('mo.id')
             ->get();
 
         return $sql;
@@ -177,7 +233,7 @@ class EquipamentoDB extends Model
     {
         $sql = DB::table('garantia as ga')
             ->select(['ga.id','ga.nome'])
-            ->orderBy('ga.nome')
+            ->orderBy('ga.id')
             ->get();
 
         return $sql;

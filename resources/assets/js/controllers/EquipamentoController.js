@@ -1,23 +1,26 @@
 class EquipamentoController {
     
     constructor() {
-        this._form = document.getElementById('form');
-        this._tipo = document.getElementById('tipo');
-        this._marca = document.getElementById('marca');
+        this._form   = document.getElementById('form');
+        this._tipo   = document.getElementById('tipo');
+        this._marca  = document.getElementById('marca');
         this._modelo = document.getElementById('modelo');
-        this._unidade = document.getElementById('unidade');
-        this._garantia = document.getElementById('garantia');
-        this._descricao = document.getElementById('decricao');
+        this._unidade    = document.getElementById('unidade');
+        this._garantia   = document.getElementById('garantia');
+        this._descricao  = document.getElementById('decricao');
         this._patrimonio = document.getElementById('patrimonio');
         this._datacompra = document.getElementById('data_compra');
         this._notafiscal = document.getElementById('nota_fiscal');
-        
-        this._modalSetor = document.getElementById('modal_setor');
+        this._novotipo   = document.getElementById('novo_tipo');
+        this._novomarca  = document.getElementById('novo_marca');
+        this._novomodelo = document.getElementById('novo_modelo');
+        this._equipamento = document.getElementById('equipamento');
 
-        this._formGrid = document.getElementById('formulario');
+        this._grid = document.getElementById('grid');
+
         this._token = document.querySelector('input[name="_token"]');
         this._table = document.querySelector('#grid tbody');
-        this._msgTable = "Não funcionou";
+        this._msgTable = "Não funcionooou";
         this.carregaGrid();
     }
 
@@ -39,6 +42,7 @@ class EquipamentoController {
 
     carregaPatrimonio()
     {
+
         this._tipo.value = '';
         this._marca.value = '';
         this._modelo.value = '';
@@ -47,17 +51,16 @@ class EquipamentoController {
         this._descricao.value = '';
         this._datacompra.value = '';
         this._notafiscal.value = '';
+        this._novotipo.value = '';
+        this._novomarca.value = '';
+        this._novomodelo.value = '';
 
         Ajax.ajax({
             url: this._form.dataset.url,
             data: {patrimonio: this._patrimonio.value},
             success: (e) => {
                 if(e.id) {
-                    // this._email.disabled = true;
-                    // this._senha.disabled = true;
-                    // this._senhaConfirmation.disabled = true;
-
-                    $('#msg-info').html(`Equipamento <b>${e.patrimonio}</b> carregado.`).removeClass('d-none');
+                    this._patrimonio.disabled = true;
                 }
 
                 this._tipo.value = e.fk_tipo;
@@ -68,6 +71,10 @@ class EquipamentoController {
                 this._descricao.value = e.descricao;
                 this._datacompra.value = e.data_compra;
                 this._notafiscal.value = e.nota_fiscal;
+                this._novotipo.value = e._novotipo;
+                this._novomarca.value = e._novomarca;
+                this._novomodelo.value = e._novomodelo;
+                this._equipamento.value = e._equipamento;
             },
             method: 'POST',
             error: (e) => {
@@ -76,24 +83,27 @@ class EquipamentoController {
                     return false;
                 }
 
-                $('#snackbar').html(e.message)
-                            .addClass('alert')
-                            .addClass('alert-danger')
-                            .fadeIn();
+                if (this._patrimonio === null ){
+                    $('#snackbar').html(e.msg)
+                                .addClass('alert')
+                                .addClass('alert-danger')
+                                .fadeIn();
+                                
+                }
             }
         });
     }
 
     adicionarEquipamento() {
-        if (!this._equipamento.value) return;
+        if (!this._patrimonio.value) return;
 
         if (this._grid.querySelectorAll(`tbody tr[id="${this._equipamento.value}"]`).length > 0) {
             return false;
         }
 
         oTable.row.add({
-            'DT_RowId': this._equipamento.value,
-            'perfil': this._equipamento.options[this._equipamento.selectedIndex].text + '<input type="hidden" value="' + this._equipamento.value + '" name="perfil[]">'
+            'DT_RowId': this._patrimonio.value,
+            'equipamento': this._equipamento.options[this._equipamento.selected].text + '<input type="hidden" value="' + this._equipamento.value + '" name="equipamento[]">'
         }).draw();
     }
 

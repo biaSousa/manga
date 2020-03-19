@@ -67,7 +67,7 @@ class EquipamentoController extends Controller
     public function gridPesquisa()
     {
         $patrimonio  = request('patrimonio', null);
-        $num_serie   = request('num_serie', null);
+        $num_serie   = request('num_serie', null); 
         $situacao    = request('situacao', null);
         $tipo        = request('tipo', null);
         $marca       = request('marca', null);
@@ -76,14 +76,20 @@ class EquipamentoController extends Controller
         $servidor    = request('servidor', null);
         $setor       = request('setor', null);
         $unidade     = request('unidade', null);
-        $data_movimentacao = request('data_movimentacao', null);
+        $data_movimentacao = date('data_movimentacao', null);
         $num_movimentacao  = request('num_movimentacao', null);
 
-        return ['colunas' => EquipamentoDB::gridPesquisa($patrimonio, $num_serie, $situacao, $tipo, $marca, $modelo,
-         $tecnico, $servidor, $setor, $unidade, $data_movimentacao, $num_movimentacao)];
+        // return ['equipamento' => EquipamentoDB::gridPesquisa($patrimonio, $num_serie, $situacao, $tipo, $marca, $modelo,
+        //  $tecnico, $servidor, $setor, $unidade, $data_movimentacao, $num_movimentacao)];
         
-        // return Paginacao::dataTables(EquipamentoDB::gridPesquisa($patrimonio, $num_serie, $situacao, $tipo, $marca, $modelo,
-        //  $tecnico, $servidor, $setor, $unidade, $data_movimentacao, $num_movimentacao));
+        return Paginacao::dataTables(EquipamentoDB::gridPesquisa($patrimonio, $num_serie, $situacao, $tipo, $marca, $modelo,
+         $tecnico, $servidor, $setor, $unidade, $data_movimentacao, $num_movimentacao), true, true);
+    }
+
+    public function gridPesquisaa()
+    {
+        $p = (object) request()->all();
+        return Paginacao::dataTables(EquipamentoDB::gridPesquisa($p), true);
     }
 
     public function gridEntrada()
@@ -133,6 +139,8 @@ class EquipamentoController extends Controller
             ]);
 
             $p = (object) $request->all();
+
+            // print_r($request->all());
 
             DB::commit();
 

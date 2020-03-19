@@ -1,7 +1,7 @@
 @extends('layout.main')
 @section('conteudo')
 <section class="container-fluid">
-    <form id="form" class="form-horizontal"  action="{{url('equipamento/gridPesquisa')}}" onsubmit="oController.pesquisar(e)">
+    <form id="form" class="form-horizontal"  action="{{url('equipamento/gridPesquisaa')}}" onsubmit="oController.pesquisar(e)">
     <input type="hidden" name="id" id="id" class="form-control" required>
         <h3>Pesquisa de Equipamentos</h3>
         <div class="panel panel-default">
