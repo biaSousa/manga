@@ -59,7 +59,7 @@
                                     @endforeach
                                 </select>
                         </div>
-                        <div class="col-md-3 mr-5">
+                        <div class="col-md-2 mr-5">
                             <label for="num_serie">Num. de Série</label>
                             <input type="text" id="num_serie" name="num_serie" class="form-control" placeholder="xxxxxx-xxxxxx" required>
                         </div>
@@ -91,7 +91,7 @@
                                     @endforeach
                                 </select>
                         </div>
-                        <div class="col-md-3 mr-5">
+                        <div class="col-md-2 mr-5">
                             <label for="nota_fiscal">Nota Fiscal</label>
                             <input type="text" id="nota_fiscal" name="nota_fiscal" class="form-control"placeholder="xxxxxx-xxxxxx">
                         </div>                       

@@ -125,7 +125,6 @@ class EquipamentoDB extends Model
      
     //entrada.blade.php
     public static function gridAdicionaEntrada($tipo = null, $marca = null, $modelo = null, $num_serie = null, $patrimonio = null)
-    // public static function gridAdicionaEntrada($p)
     {
         $sql = DB::table('equipamento as eq')
             ->join('tipo as ti', 'eq.fk_tipo', '=', 'ti.id')
@@ -148,6 +147,54 @@ class EquipamentoDB extends Model
 
             return $aDataTables;
     }
+
+    public static function gridOrdemServico($tipo = null, $num_os = null, $data_os = null)
+    {
+        $sql = DB::table('entrada_ordem_servico as os')
+            ->join('unidade as un', 'os.fk_unidade', '=', 'un.id')
+            ->join('tipo as ti', 'os.fk_tipo', '=', 'ti.id')
+            ->join('setor as se', 'os.fk_setor', '=', 'se.id')
+            ->join('tecnico as tec', 'os.fk_tecnico', '=', 'tec.id')
+            ->join('servidor as ser', 'os.fk_servidor', '=', 'ser.id')
+            ->join('situacao as sit', 'os.fk_situacao', '=', 'sit.id')
+            ->select(['os.id',
+                      'os.num_os',
+                      'os.data_chamado',
+                      'os.descricao',
+                      'ti.nome as tipo',
+                      'se.nome as setor',
+                      'tec.nome as tecnico',
+                      'ser.nome as servidor',
+                      'sit.nome as situacao'
+            ]);
+
+        if ($tipo) {
+            $sql->where('tipo', $tipo);
+        }
+
+        if ($num_os) {
+            $sql->where('num_os', $num_os);
+        }
+
+        if ($data_chamado) {
+            $sql->where('data_chamado', $data_chamado);
+        }
+
+        $aDataTables = Paginacao::dataTables($sql, true);
+
+        return $aDataTables;
+    }
+
+    public static function getProblema()
+    {
+        $sql = DB::table('problema as pro')
+            ->select(['pro.id','pro.nome'])
+            ->orderBy('pro.id')
+            ->get();
+
+        return $sql;
+    }
+
     public static function getSituacao()
     {
         $sql = DB::table('situacao as sit')
