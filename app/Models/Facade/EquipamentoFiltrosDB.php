@@ -14,14 +14,13 @@ use Illuminate\Database\Eloquent\Model;
 class EquipamentoFiltrosDB extends Model
 {
     //novo.blade.php
-    public static function filtroMarcaNovoEquipamento($id)
+    public static function filtroMarcaNovoEquipamento($p)
     {
         $sql = DB::table('marca as ma')
-            ->join('tipo as t', 'ma.fk_tipo', '=', 't.id')
-            ->where('ma.fk_tipo', $id)
+            ->join('tipo as ti', 'ma.fk_tipo', '=', 'ti.id')
+            ->where('ma.fk_tipo','=' ,$p)
             ->select(['ma.id', 'ma.nome'])
-            ->orderBy('ma.nome')
-            ->get();
+            ->orderBy('ma.nome');
         
         return $sql; 
     }
@@ -31,7 +30,7 @@ class EquipamentoFiltrosDB extends Model
     {
         $sql = DB::table('modelo as mo')
             ->join('marca as ma', 'mo.fk_marca', '=', 'ma.id')
-            ->where('mo.fk_marca', $id)
+            ->where('mo.fk_marca','=' ,$id)
             ->select(['mo.id', 'mo.nome'])
             ->orderBy('mo.nome')
             ->get();
@@ -50,18 +49,18 @@ class EquipamentoFiltrosDB extends Model
             ->join('marca as ma', 'eq.fk_marca', '=', 'ma.id')
             ->join('modelo as mo', 'eq.fk_modelo', '=', 'mo.id')
             ->join('garantia as ga', 'eq.fk_garantia', '=', 'ga.id')
-            ->where('eq.patrimonio', $id)
+            ->where('eq.patrimonio','=' ,$id)
             ->select(['eq.id',
                       'eq.num_serie',
                       'eq.data_compra',
                       'eq.nota_fiscal',
                       'eq.descricao',
-                      'eq.fk_setor',
-                      'eq.fk_unidade',
-                      'eq.fk_tipo',
-                      'eq.fk_modelo',
-                      'eq.fk_marca',
-                      'eq.fk_garantia'])
+                      'se.nome as setor',
+                      'un.nome as unidade',
+                      'ti.nome as tipo',
+                      'mo.nome as modelo',
+                      'ma.nome as marca',
+                      'ga.nome as garantia'])
             ->get();
 
         return $sql; 
@@ -72,7 +71,7 @@ class EquipamentoFiltrosDB extends Model
     {
         $sql = DB::table('servidor as ser')
             ->join('unidade as u', 'ser.fk_unidade', '=', 'u.id')
-            ->where('ser.fk_unidade', $id)
+            ->where('ser.fk_unidade','=' ,$id)
             ->select(['ser.id', 'ser.fk_unidade'])
             ->get();
         
@@ -84,7 +83,7 @@ class EquipamentoFiltrosDB extends Model
     {
         $sql = DB::table('servidor as ser')
             ->join('setor as set', 'ser.fk_setor', '=', 'set.id')
-            ->where('ser.fk_setor', $id)
+            ->where('ser.fk_setor','=' ,$id)
             ->select(['ser.id', 'ser.fk_setor'])
             ->get();
         

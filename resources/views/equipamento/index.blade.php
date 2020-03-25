@@ -1,9 +1,9 @@
 @extends('layout.main')
 @section('conteudo')
 <section class="container-fluid">
-    <form id="form" class="form-horizontal"  action="{{url('equipamento/gridPesquisa')}}" >
+    <form id="form" class="form-horizontal" method="post" action="{{url('equipamento/gridPesquisa')}}">
     <input type="hidden" name="id" id="id" class="form-control" required>
-        <h3>Pesquisa de Equipamentos</h3>
+        <h3>Pesquisa de Equipamentos \ grid</h3>
         <div class="panel panel-default">
             <div class="panel-body col-md-offset-2">
                 {{csrf_field()}}
@@ -109,12 +109,12 @@
                             <th width="3%">Situação</th>
                             <th width="3%">Marca</th>
                             <th width="3%">Modelo</th>
-                            <th width="5%">Data da Mov.</th>
-                            <th width="5%">Num. da Mov.</th>
                             <th width="5%">Tecnico</th>
                             <th width="5%">Servidor</th>
                             <th width="3%">Setor</th>
                             <th width="5%">Unidade</th>
+                            <!-- <th width="5%">Data da Mov.</th> -->
+                            <th width="5%">Num. da Mov.</th>
                         </tr> 
                     </thead> 
                     <tbody>
@@ -134,7 +134,7 @@
 <script src="{{asset('js/app/helpers/GenericModalForm.js')}}"></script>
 <script src="{{asset('js/app/controllers/PesquisaController.js')}}"></script>
 @include('layout.datatables', ['carregamento_inicial' => true, 'colunas' => ['id', 'patrimonio', 'num_serie', 'tipo', 'situacao', 'marca',
- 'modelo', 'data_movimentacao', 'num_movimentacao', 'tecnico', 'servidor', 'setor', 'unidade']])
+ 'modelo', 'tecnico', 'servidor', 'setor', 'unidade', 'num_movimentacao']])
 <script>
     var oController = new PesquisaController();
 </script>

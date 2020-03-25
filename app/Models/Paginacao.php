@@ -43,7 +43,7 @@ class Paginacao
      * @param bool $salvarPesquisaAntiga
      * @return array
      */
-    public static function dataTables(Builder $x, $dataTablesID = false, $salvarPesquisaAntiga = false)
+    public static function dataTables(Builder $x, $dataTablesID = true, $salvarPesquisaAntiga = false)
     {
         self::manipularSessao($salvarPesquisaAntiga);
 

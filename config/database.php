@@ -38,26 +38,13 @@ return [
             'driver' => 'pgsql',
             'host' => env('DB_HOST', '10.73.0.63'),
             'port' => env('DB_PORT', '5432'),
-            'database' => env('DB_DATABASE', 'bianca_db'),
-            'username' => env('DB_USERNAME', 'postgres'),
-            'password' => env('DB_PASSWORD', '@policia-postgres@'),
-            'schema'   => env('DB_SCHEMA', 'manga'),
+            'database' => env('DB_DATABASE', 'forge'),
+            'username' => env('DB_USERNAME', 'forge'),
+            'password' => env('DB_PASSWORD', 'forge'),
+            'schema'   => env('DB_SCHEMA', 'forge'),
             'charset'  => 'utf8',
             'sslmode'  => 'prefer',
             'prefix'   => '',
-        ],
-
-        'pgsql' => [
-            'driver' => 'pgsql',
-            'host' => env('DB_HOST', '10.73.0.63'),
-            'port' => env('DB_PORT', '5432'),
-            'database' => env('DB_DATABASE', 'bianca_db'),
-            'username' => env('DB_USERNAME', 'postgres'),
-            'password' => env('DB_PASSWORD', '@policia-postgres@'),
-            'charset'  => 'utf8',
-            'prefix'   => '',
-            'schema'   => env('DB_SCHEMA', 'manga'),
-            'sslmode'  => 'prefer',
         ],
 
         'conexao_siga' => [
@@ -72,7 +59,6 @@ return [
             'schema' => env('CONEXAO_SIGA_DB_SHCEMA', 'public'),
             'sslmode' => 'prefer',
         ],
-
 
         'sqlsrv' => [
             'driver' => 'sqlsrv',
