@@ -68,7 +68,8 @@ class EquipamentoDB extends Model
         //     $db->where('situacao', $situacao);
         // }
 
-        $aDataTables = Paginacao::dataTables($db, true);
+
+        $aDataTables = Paginacao::dataTables($db);
 
         // echo "<pre>";
         // var_dump($aDataTables);
@@ -113,11 +114,59 @@ class EquipamentoDB extends Model
                 
             return $sql;
     }
+
+    public static function gridOrdemServico($tipo = null, $num_os = null, $data_os = null)
+    {
+        $sql = DB::table('entrada_ordem_servico as os')
+            ->join('unidade as un', 'os.fk_unidade', '=', 'un.id')
+            ->join('tipo as ti', 'os.fk_tipo', '=', 'ti.id')
+            ->join('setor as se', 'os.fk_setor', '=', 'se.id')
+            ->join('tecnico as tec', 'os.fk_tecnico', '=', 'tec.id')
+            ->join('servidor as ser', 'os.fk_servidor', '=', 'ser.id')
+            ->join('situacao as sit', 'os.fk_situacao', '=', 'sit.id')
+            ->select(['os.id',
+                      'os.num_os',
+                      'os.data_chamado',
+                      'os.descricao',
+                      'ti.nome as tipo',
+                      'se.nome as setor',
+                      'tec.nome as tecnico',
+                      'ser.nome as servidor',
+                      'sit.nome as situacao'
+            ]);
+
+        if ($tipo) {
+            $sql->where('tipo', $tipo);
+        }
+
+        if ($num_os) {
+            $sql->where('num_os', $num_os);
+        }
+
+        if ($data_chamado) {
+            $sql->where('data_chamado', $data_chamado);
+        }
+
+        $aDataTables = Paginacao::dataTables($sql, true);
+
+        return $aDataTables;
+    }
+
+    public static function getProblema()
+    {
+        $sql = DB::table('problema as pro')
+            ->select(['pro.id','pro.nome'])
+            ->orderBy('pro.id')
+            ->get();
+
+        return $sql;
+    }
+
     public static function getSituacao()
     {
         $sql = DB::table('situacao as sit')
             ->select(['sit.id','sit.nome'])
-            ->orderBy('sit.nome')
+            ->orderBy('sit.id')
             ->get();
 
         return $sql;
@@ -127,7 +176,7 @@ class EquipamentoDB extends Model
     {
         $sql = DB::table('unidade as un')
             ->select(['un.id','un.nome'])
-            ->orderBy('un.nome')
+            ->orderBy('un.id')
             ->get();
 
         return $sql;
@@ -138,7 +187,7 @@ class EquipamentoDB extends Model
         $sql = DB::table('setor as se')
             // ->where('fk_unidade', '=', 3)
             ->select(['se.id','se.nome'])
-            ->orderBy('se.nome')
+            ->orderBy('se.id')
             ->get();
 
         return $sql;
@@ -148,7 +197,7 @@ class EquipamentoDB extends Model
     {
         $sql = DB::table('tecnico as te')
             ->select(['te.id','te.nome'])
-            ->orderBy('te.nome')
+            ->orderBy('te.id')
             ->get();
 
         return $sql;
@@ -158,7 +207,47 @@ class EquipamentoDB extends Model
     {
         $sql = DB::table('servidor as se')
             ->select(['se.id','se.nome'])
-            ->orderBy('se.nome')
+            ->orderBy('se.id')
+            ->get();
+
+        return $sql;
+    }
+
+    public static function getTipo()
+    {
+        $sql = DB::table('tipo as ti')
+            ->select(['ti.id','ti.nome'])
+            ->orderBy('ti.id')
+            ->get();
+
+        return $sql;
+    }
+
+    public static function getMarca()
+    {
+        $sql = DB::table('marca as ma')
+            ->select(['ma.id','ma.nome'])
+            ->orderBy('ma.id')
+            ->get();
+
+        return $sql;
+    }
+
+    public static function getModelo()
+    {
+        $sql = DB::table('modelo as mo')
+            ->select(['mo.id','mo.nome'])
+            ->orderBy('mo.id')
+            ->get();
+
+        return $sql;
+    }
+
+    public static function getGarantia()
+    {
+        $sql = DB::table('garantia as ga')
+            ->select(['ga.id','ga.nome'])
+            ->orderBy('ga.id')
             ->get();
 
         return $sql;

@@ -7,22 +7,18 @@
         <div class="panel panel-default">
             <div class="panel-body col-md-offset-2">
                 {{csrf_field()}}
-                <div class="row">
-                    <!-- <div class="form-group">
+                <!-- <div class="row">
+                    <div class="form-group">
                         <div class="col-md-9 mr-8">
                             <div class="input-group">
                                 <input type="text" class="form-control" placeholder="Pesquisar...">
                                 <span class="input-group-btn">
-                                        <button type="button" class="btn btn-default"><i class="fa fa-search"></i></button>
+                                    <a type="button" class="btn btn-default"><i class="fa fa-search"></i></a>
                                 </span>
                             </div>
                         </div>
-                        <div class="col-md-9 mr-2">
-                            <div class="col-md-2">
-                            </div>
-                        </div>
-                    </div> -->
-                </div>
+                    </div>
+                </div> -->
                 <div class="row">
                     <div class="form-group">
                         <div class="col-md-2 mr-5">
@@ -70,8 +66,8 @@
                     <div class="form-group">
                         <div class="col-md-7 mr-5">
                             <div class="col-mr-1">
-                                <button type="submit" class="btn btn-primary" onclick="oController.pesquisar(e)">
-                                <i class="glyphicon glyphicon-search"></i> Pesquisar</button>
+                                <button type="submit" class="btn btn-primary" >
+                                <i class="glyphicon glyphicon-search" onclick="oController.pesquisar(e)"></i> Pesquisar</button>
                             </div>
                         </div>
                         <div class="col-md-1 mr-5">
@@ -124,14 +120,9 @@
 </section>
 
 @endsection
-
 @section('scripts')
-<script src="{{asset('js/jquery.form.js')}}"></script>
+<script src="{{asset('js/jquery.min.js')}}"></script>
 <script src="{{asset('js/app/models/Ajax.js')}}"></script>
-<script src="{{asset('js/app/helpers/Utils.js')}}"></script>
-<script src="{{asset('js/app/models/ValidaForm.js')}}"></script>
-<script src="{{asset('js/app/views/MensagemView.js')}}"></script>
-<script src="{{asset('js/app/helpers/GenericModalForm.js')}}"></script>
 <script src="{{asset('js/app/controllers/PesquisaController.js')}}"></script>
 @include('layout.datatables', ['carregamento_inicial' => true, 'colunas' => ['id', 'patrimonio', 'num_serie', 'tipo', 'situacao', 'marca',
  'modelo', 'tecnico', 'servidor', 'setor', 'unidade', 'num_movimentacao']])

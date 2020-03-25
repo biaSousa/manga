@@ -77,6 +77,7 @@ class EquipamentoController extends Controller
         $servidor    = request('servidor', null);
         $setor       = request('setor', null);
         $unidade     = request('unidade', null);
+        // $data_movimentacao = date('data_movimentacao', null);
         $num_movimentacao  = request('num_movimentacao', null);
         
         return Paginacao::dataTables(EquipamentoDB::gridPesquisa($patrimonio, $num_serie, $situacao, $tipo, $marca, $modelo,
@@ -129,6 +130,8 @@ class EquipamentoController extends Controller
 
             $p = (object) $request->all();
 
+            // print_r($request->all());
+
             DB::commit();
 
             return response()->json(array('msg' => 'Equipamento cadastrado com sucesso.'));
@@ -166,17 +169,17 @@ class EquipamentoController extends Controller
 
             //encontrar id da linha antes de salvar
             $oEquipamento = Equipamento::updateOrCreate([
-                'fk_setor'    => $request->get('setor'), //novo_setor
+                'fk_setor'    => $request->get('novo_setor'), //novo_setor
                 'fk_unidade'  => $request->get('unidade'),
             ]);
 
             $oSetorUnidade = SetorUnidade::updateOrCreate([
-                'fk_setor'    => $request->get('setor'), //novo_setor
+                'fk_setor'    => $request->get('novo_setor'), //novo_setor
                 'fk_unidade'  => $request->get('unidade'),
             ]);
 
             $oSetor = Setor::updateOrCreate([
-                'nome'        => $request->get('setor'), //novo_setor
+                'nome'        => $request->get('novo_setor'), //novo_setor
                 'fk_unidade'  => $request->get('unidade'),
             ]);
 

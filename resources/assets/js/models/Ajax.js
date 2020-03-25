@@ -1,6 +1,6 @@
 /**
  * Classe de ajax
- * versão 2018.2
+ * versão 2019.1
  * parametros aceitos:
  *
  * url: 'string'
@@ -88,7 +88,7 @@ class Ajax {
         //             //     mensagem(true, JSON.parse(this.responseText).msg, 'danger');
         //     }
         // };
-        xhr.open(obj.method, obj.url, true);
+        xhr.open(obj.method, obj.url, typeof obj.async === 'undefined' ? true : obj.async);//true deixa o ajax async
         xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
 
         if (obj.contentType === undefined)

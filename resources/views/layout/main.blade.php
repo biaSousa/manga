@@ -229,6 +229,7 @@
             <ul class="nav navbar-nav">
                 <li class="nav-item"><a href="/app-laravel/public/equipamento/index" class="nav-link">Início</a></li>
                 <li class="nav-item"><a href="/app-laravel/public/equipamento/novo" class="nav-link">Novo Equipamento</a></li>
+                <li class="nav-item"><a href="/app-laravel/public/servidor/ordem_servico" class="nav-link">Abertuda de OS</a></li>
                 <li class="nav-item dropdown">
                     <a data-toggle="dropdown" class="nav-link dropdown-toggle" href="#">Movimentação<b class="caret"></b></a>
                     <ul class="dropdown-menu">
