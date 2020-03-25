@@ -1,8 +1,8 @@
 @extends('layout.main')
 @section('conteudo')
 <section class="container-fluid">
-    <form id="form" class="form-horizontal"  action="{{url('equipamento/gridPesquisaa')}}" onsubmit="oController.pesquisar(e)">
-    <input type="hidden" name="id" id="id" class="form-control" required>
+    <form id="form" class="form-horizontal" method="post" action="{{url('equipamento/gridPesquisaa')}}">
+    <!-- <input type="hidden" name="id" id="id" class="form-control" required> -->
         <h3>Pesquisa de Equipamentos</h3>
         <div class="panel panel-default">
             <div class="panel-body col-md-offset-2">
@@ -67,7 +67,7 @@
                         <div class="col-md-7 mr-5">
                             <div class="col-mr-1">
                                 <button type="submit" class="btn btn-primary" >
-                                <i class="glyphicon glyphicon-search"></i> Pesquisar</button>
+                                <i class="glyphicon glyphicon-search" onclick="oController.pesquisar(e)"></i> Pesquisar</button>
                             </div>
                         </div>
                         <div class="col-md-1 mr-5">
@@ -120,17 +120,12 @@
 </section>
 
 @endsection
-
 @section('scripts')
-<script src="{{asset('js/jquery.form.js')}}"></script>
+<script src="{{asset('js/jquery.min.js')}}"></script>
 <script src="{{asset('js/app/models/Ajax.js')}}"></script>
-<script src="{{asset('js/app/helpers/Utils.js')}}"></script>
-<script src="{{asset('js/app/models/ValidaForm.js')}}"></script>
-<script src="{{asset('js/app/views/MensagemView.js')}}"></script>
-<script src="{{asset('js/app/helpers/GenericModalForm.js')}}"></script>
 <script src="{{asset('js/app/controllers/PesquisaController.js')}}"></script>
-@include('layout.datatables', ['carregamento_inicial' => true, 'colunas' => ['id', 'patrimonio', 'num_serie', 'tipo', 'situacao', 'marca',
- 'modelo', 'data_movimentacao', 'num_movimentacao', 'tecnico', 'servidor', 'setor', 'unidade']])
+@include('layout.datatables', ['carregamento_inicial' => true, 'colunas' => ['id', 'patrimonio', 'num_serie', 'situacao', 'tipo', 'marca',
+ 'modelo', 'tecnico', 'servidor', 'setor', 'unidade', 'num_movimentacao']])
 <script>
     var oController = new PesquisaController();
 </script>

@@ -15,8 +15,25 @@ use Illuminate\Database\Eloquent\Model;
 class EquipamentoDB extends Model
 {
     //index.blade.php
-    public static function gridPesquisa($num_serie = null, $num_movimentacao = null, $data_movimentacao = null, $patrimonio = null, $tipo = null, $situacao = null)
+    public static function gridPesquisa($patrimonio = null, $num_serie = null, $situacao = null, $tipo = null, $marca = null, $modelo = null,
+    $tecnico = null, $servidor = null, $setor = null, $unidade = null, $num_movimentacao = null)
     {
+        $colunas = [
+            're.id',
+            're.patrimonio', 
+            're.num_serie',
+            'sit.nome as situacao',
+            'ti.nome as tipo',
+            'ma.nome as marca',
+            'mo.nome as modelo',
+            'te.nome as tecnico',
+            'ser.nome as servidor',
+            'set.nome as setor',
+            'un.nome as unidade',
+            // 're.data_movimentacao',          
+            're.num_movimentacao'
+        ];
+
         $db = DB::table('recebimento as re')
             ->join('tipo as ti', 're.fk_tipo', '=', 'ti.id')
             ->join('marca as ma', 're.fk_marca', '=', 'ma.id')
@@ -25,19 +42,8 @@ class EquipamentoDB extends Model
             ->join('unidade as un', 're.fk_unidade', '=', 'un.id')
             ->join('servidor as ser', 're.fk_servidor', '=', 'ser.id')
             ->join('situacao as sit', 're.fk_situacao', '=', 'sit.id')
-            ->select(['re.id',
-                      're.num_serie',
-                      're.num_movimentacao',
-                    //   're.data_movimentacao',
-                    //   're.patrimonio', //patrimonio vem de equipamento 
-                      'ti.nome as tipo',
-                      'ma.nome as marca',
-                      'mo.nome as modelo',
-                      'te.nome as tecnico',
-                      'un.nome as unidade',
-                      'ser.nome as servidor',
-                      'sit.nome as situacao'
-            ]);
+            ->join('setor as set', 're.fk_setor', '=', 'set.id')
+            ->select($colunas);
 
         if ($num_serie) {
             $db->where('re.num_serie', $num_serie);
@@ -47,9 +53,9 @@ class EquipamentoDB extends Model
             $db->where('re.num_movimentacao', $num_movimentacao);
         }
 
-        if ($data_movimentacao) {
-            $db->where('re.data_movimentacao', $data_movimentacao);
-        }
+        // if ($data_movimentacao) {
+        //     $db->where('re.data_movimentacao', $data_movimentacao);
+        // }
 
         if ($patrimonio) {
             $db->where('re.patrimonio', 'ilike',"%$patrimonio%");
@@ -63,9 +69,9 @@ class EquipamentoDB extends Model
             $db->where('sit.situacao', $situacao);
         }
 
-        $aDataTables = Paginacao::dataTables($db);
+        // $aDataTables = Paginacao::dataTables($db);
 
-        return $aDataTables;
+        return $db;
     }
 
     public static function gridPesquisaa($p)

@@ -2,9 +2,9 @@ class PesquisaController {
     
     constructor() {
         this._form = document.getElementById('form');
-        this._grid = document.getElementById('grid');
+        this._table = document.getElementById('grid');
         // this._token = document.querySelector('input[name="_token"]');
-        this._table = document.querySelector('#grid tbody');
+        this._tablee = document.querySelector('#grid tbody');
         this._msgTable = "inhai bebe";
         // this.carregaGrid();
         //never gonna give a fuck

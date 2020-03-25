@@ -64,7 +64,7 @@ class EquipamentoController extends Controller
         return view('equipamento.entrada', compact ( 'marca', 'modelo', 'setor', 'unidade', 'tecnico', 'servidor', 'situacao'));
     }
 
-    public function gridPesquisa()
+    public function gridPesquisaa()
     {
         $patrimonio  = request('patrimonio', null);
         $num_serie   = request('num_serie', null); 
@@ -76,20 +76,25 @@ class EquipamentoController extends Controller
         $servidor    = request('servidor', null);
         $setor       = request('setor', null);
         $unidade     = request('unidade', null);
-        $data_movimentacao = date('data_movimentacao', null);
+        // $data_movimentacao = date('data_movimentacao', null);
         $num_movimentacao  = request('num_movimentacao', null);
 
         // return ['equipamento' => EquipamentoDB::gridPesquisa($patrimonio, $num_serie, $situacao, $tipo, $marca, $modelo,
         //  $tecnico, $servidor, $setor, $unidade, $data_movimentacao, $num_movimentacao)];
         
         return Paginacao::dataTables(EquipamentoDB::gridPesquisa($patrimonio, $num_serie, $situacao, $tipo, $marca, $modelo,
-         $tecnico, $servidor, $setor, $unidade, $data_movimentacao, $num_movimentacao), true, true);
+         $tecnico, $servidor, $setor, $unidade, $num_movimentacao), true);
     }
 
-    public function gridPesquisaa()
+    public function gridPesquisa()
     {
-        $p = (object) request()->all();
-        return Paginacao::dataTables(EquipamentoDB::gridPesquisa($p), true);
+        $nome = request('nome', null);
+        $email = request('email', null);
+
+        return Paginacao::dataTables(UsuarioLocalDB::grid($nome, $email), true);
+    
+        // $p = (object) request()->all();
+        // return Paginacao::dataTables(EquipamentoDB::gridPesquisa($p), true);
     }
 
     public function gridEntrada()
