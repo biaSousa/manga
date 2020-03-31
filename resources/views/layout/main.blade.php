@@ -229,12 +229,20 @@
             <ul class="nav navbar-nav">
                 <li class="nav-item"><a href="/app-laravel/public/equipamento/index" class="nav-link">Início</a></li>
                 <li class="nav-item"><a href="/app-laravel/public/equipamento/novo" class="nav-link">Novo Equipamento</a></li>
-                <li class="nav-item"><a href="/app-laravel/public/servidor/ordem_servico" class="nav-link">Abertuda de OS</a></li>
                 <li class="nav-item dropdown">
                     <a data-toggle="dropdown" class="nav-link dropdown-toggle" href="#">Movimentação<b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <li><a href="/app-laravel/public/equipamento/entrada" class="dropdown-item">Entrada de Equipamento</a></li>
                         <li><a href="/app-laravel/public/equipamento/saida" class="dropdown-item">Saida de Equipamento</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a data-toggle="dropdown" class="nav-link dropdown-toggle" href="#">Servidor<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/app-laravel/public/servidor/index" class="dropdown-item">Pesquisa</a></li>
+                        <li><a href="/app-laravel/public/servidor/novo" class="dropdown-item">Cadastro</a></li>
+                        <li><a href="/app-laravel/public/servidor/ordem_servico" class="dropdown-item">Abertuda de OS</a></li>
+
                     </ul>
                 </li>
             </ul>

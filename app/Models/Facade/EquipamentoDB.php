@@ -3,6 +3,7 @@
 namespace App\Models\Facade;
 use App\Models\Entity\Tipo;
 use App\Models\Entity\Marca;
+use App\Models\Entity\Cargo;
 use App\Models\Entity\Modelo;
 use App\Models\Entity\Garantia;
 use App\Models\Entity\Situacao;
@@ -98,13 +99,13 @@ class EquipamentoDB extends Model
             ->orderBy('e.id')
             ->get();
 
-            if ($p->$marca){
-                $sql->where ('tipo', $tipo);
-            }
+            // if ($p->$marca){
+            //     $sql->where ('tipo', $tipo);
+            // }
 
-            if ($p->$modelo){
-                $sql->where ('marca', $modelo);
-            }
+            // if ($p->$modelo){
+            //     $sql->where ('marca', $modelo);
+            // }
 
             // if ($tipo) {
             //     $sql->where('tipo', $tipo);
@@ -253,41 +254,11 @@ class EquipamentoDB extends Model
         return $sql;
     }
 
-    public static function getTipo()
+    public static function getCargo()
     {
-        $sql = DB::table('tipo as ti')
-            ->select(['ti.id','ti.nome'])
-            ->orderBy('ti.nome')
-            ->get();
-
-        return $sql;
-    }
-
-    public static function getMarca()
-    {
-        $sql = DB::table('marca as ma')
-            ->select(['ma.id','ma.nome'])
-            ->orderBy('ma.nome')
-            ->get();
-
-        return $sql;
-    }
-
-    public static function getModelo()
-    {
-        $sql = DB::table('modelo as mo')
-            ->select(['mo.id','mo.nome'])
-            ->orderBy('mo.nome')
-            ->get();
-
-        return $sql;
-    }
-
-    public static function getGarantia()
-    {
-        $sql = DB::table('garantia as ga')
-            ->select(['ga.id','ga.nome'])
-            ->orderBy('ga.nome')
+        $sql = DB::table('cargo as ca')
+            ->select(['ca.id','ca.nome'])
+            ->orderBy('ca.id')
             ->get();
 
         return $sql;

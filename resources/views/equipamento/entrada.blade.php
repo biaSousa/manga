@@ -187,19 +187,11 @@
             <thead>
                 <tr>
                     <th width="2%">ID</th>
-<<<<<<< HEAD
                     <th width="3%">Tipo</th>
                     <th width="3%">Marca</th>
                     <th width="3%">Modelo</th>
                     <th width="3%">Num. Série</th>
                     <th width="3%">Patrimonio</th>
-=======
-                    <th width="3%">Num. Série</th>
-                    <th width="3%">Patrimonio</th>
-                    <th width="3%">Tipo</th>
-                    <th width="3%">Marca</th>
-                    <th width="3%">Modelo</th>
->>>>>>> 43b458d1d901e5e34ccef6cc5356a5e96019c5a0
                 </tr> 
             </thead> 
                     </thead> 

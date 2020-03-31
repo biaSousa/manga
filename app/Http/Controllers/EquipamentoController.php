@@ -80,8 +80,19 @@ class EquipamentoController extends Controller
         // $data_movimentacao = date('data_movimentacao', null);
         $num_movimentacao  = request('num_movimentacao', null);
         
-        return Paginacao::dataTables(EquipamentoDB::gridPesquisa($patrimonio, $num_serie, $situacao, $tipo, $marca, $modelo,
-         $tecnico, $servidor, $setor, $unidade, $num_movimentacao), true);
+        return Paginacao::dataTables(EquipamentoDB::gridPesquisa(
+            $patrimonio,
+            $num_serie, 
+            $situacao, 
+            $tipo, 
+            $marca, 
+            $modelo,
+            $tecnico, 
+            $servidor, 
+            $setor, 
+            $unidade,
+            $num_movimentacao), 
+            true);
     }
 
     //sem datatables
