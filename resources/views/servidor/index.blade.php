@@ -1,12 +1,12 @@
 @extends('layout.main')
 @section('conteudo')
 <section class="container-fluid">
-    <form id="form" class="form-horizontal" method="post" action="{{url('equipamento/gridPesquisa')}}">
-    <input type="hidden" name="id" id="id" class="form-control" required>
-        <h3>Pesquisa de Equipamentos \ grid</h3>
+    <form id="form" class="form-horizontal" method="post" action="{{url('servidor/gridServidor')}}">
+        <h3>Pesquisa de Servidores</h3>
         <div class="panel panel-default">
             <div class="panel-body col-md-offset-2">
                 {{csrf_field()}}
+    <input type="hidden" name="id" id="id" class="form-control" required>
                 <!-- <div class="row">
                     <div class="form-group">
                         <div class="col-md-9 mr-8">
@@ -42,7 +42,7 @@
                         <div class="col-md-7 mr-5">
                             <div class="col-mr-1">
                                 <button type="submit" class="btn btn-primary" >
-                                <i class="glyphicon glyphicon-search" onclick="oController.pesquisar(e)"></i> Pesquisar</button>
+                                <i class="glyphicon glyphicon-search" onsubmit="oController.pesquisar(e)"></i> Pesquisar</button>
                             </div>
                         </div>
                         <div class="col-md-1 mr-5">
@@ -74,18 +74,12 @@
                     <thead>
                         <tr>
                             <th width="2%">ID</th>
-                            <th width="5%">Patrimonio</th>
-                            <th width="5%">Num. Série</th>
-                            <th width="3%">Tipo</th>
-                            <th width="3%">Situação</th>
-                            <th width="3%">Marca</th>
-                            <th width="3%">Modelo</th>
-                            <th width="5%">Tecnico</th>
-                            <th width="5%">Servidor</th>
-                            <th width="3%">Setor</th>
+                            <th width="5%">Nome</th>
                             <th width="5%">Unidade</th>
-                            <!-- <th width="5%">Data da Mov.</th> -->
-                            <th width="5%">Num. da Mov.</th>
+                            <th width="3%">Setor</th>
+                            <th width="3%">CPF</th>
+                            <th width="3%">Matrícula</th>
+                            <th width="3%">Cargo</th>
                         </tr> 
                     </thead> 
                     <tbody>
@@ -97,10 +91,10 @@
 @endsection
 @section('scripts')
 <script src="{{asset('js/jquery.min.js')}}"></script>
-@include('layouts.datatables-simples', ['colunas' => ['nome', 'unidade', 'setor', 'cpf', 'matricula', 'cargo']])
+@include('layout.datatables', ['carregamento_inicial' => true, 'colunas' => ['nome', 'unidade', 'setor', 'cpf', 'matricula', 'cargo']])
 <script src="{{asset('js/app/models/Ajax.js')}}"></script>
-<script src="{{ asset('js/vanillaTextMask.js') }}"></script>
-<script src="{{ asset('js/app/models/ListaErrors.js') }}"></script>
+<script src="{{asset('js/vanillaTextMask.js') }}"></script>
+<script src="{{asset('js/app/models/ListaErrors.js') }}"></script>
 <script src="{{asset('js/app/controllers/PesquisaController.js')}}"></script>
 <script>
     var oController = new PesquisaController();

@@ -9,9 +9,7 @@
         "barryvdh/laravel-dompdf": "^0.8.5",
         "fideloper/proxy": "~3.3",
         "laravel/framework": "5.5.*",
-        "laravel/tinker": "~1.0",
-        "philipebarra/metaphone": "dev-master",
-        "policiacivil/seguranca": "dev-master"
+        "laravel/tinker": "~1.0"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.2",
@@ -22,9 +20,7 @@
         "symfony/thanks": "^1.0"
     },
     "autoload": {
-        "files":[
-            "app/helpers.php"
-        ],
+        "files":[],
         "classmap": [
             "database/seeds",
             "database/factories"
@@ -44,22 +40,7 @@
             ]
         }
     },
-    "repositories": [
-        {
-            "type": "path",
-            "url": "packages/philipebarra/metaphone",
-            "options": {
-                "symlink": true
-            }
-        },
-        {
-            "type": "path",
-            "url": "packages/policiacivil/seguranca",
-            "options": {
-                "symlink": true
-            }
-        }
-    ],
+    "repositories": [],
     "scripts": {
         "post-root-package-install": [
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""

@@ -9,12 +9,12 @@
             searching: false,
             processing: true,
             serverSide: true,
-            // createdRow: function(row, data, index) {
-            //
-            //     row.addEventListener('click', function(e) {
-            //         console.log(row.classList);
-            //     });
-            // },
+            createdRow: function(row, data, index) {
+            
+                row.addEventListener('click', function(e) {
+                    console.log(row.classList);
+                });
+            },
             select: {
                 style: 'single'
             },

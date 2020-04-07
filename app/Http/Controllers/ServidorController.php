@@ -8,12 +8,44 @@ use App\Models\Entity\Servidor;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Facade\EquipamentoDB;
-use App\Models\Regras\ServidorRegras;
+use App\Models\Facade\ServidorDB;
 
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 class ServidorController extends Controller
 {
+    //from bono
+    public function index()
+    {
+        $situacoes = PlantaoSituacao::orderBy('nome')->get();
+        $unidades_diretores = UnidadeDB::unidadesComDiretores();
+        $usuario = auth()->user();
+        $unidadeUsuarioLogado = $usuario->fk_unidade;
+        $aPerfil = UsuarioLocalDB::perfilUsuario($usuario->id)->pluck('id')->toArray();
+        $situacaoPadrao = '';
+
+        //verifica se tem perfil de dg
+        if(in_array(7, $aPerfil)) {
+            $unidadeUsuarioLogado = '';
+            $situacaoPadrao = 3;//3 - Autorizado Diretor
+        }
+
+        //verifica se tem perfil de pagamento
+        if(in_array(8, $aPerfil)) {
+            $unidadeUsuarioLogado = '';
+            $situacaoPadrao = 2;//2 - Autorizado DG
+        }
+
+        return view('plantao.index', compact('situacoes', 'unidades_diretores',
+            'unidadeUsuarioLogado', 'situacaoPadrao'));
+    }
+    //from bono
+    public function grid()
+    {
+        $p = (object)request()->all();
+        return Paginacao::dataTables(PlantaoRegras::grid($p), true);
+    }
+
     //tela de pesquisa futura (*) (*) 
     public function servidor()
     { 
@@ -21,10 +53,10 @@ class ServidorController extends Controller
     }
 
     //grid de pesquisa (*) (*)
-    public function grid()
+    public function gridServidor()
     {
         $p = (object)request()->all();
-        return Paginacao::dataTables(ServidorRegras::grid($p), true);
+        return Paginacao::dataTables(ServidorDB::gridServidor($p), true);
     }
 
     //tela de cadastro de novo servidor
@@ -61,9 +93,9 @@ class ServidorController extends Controller
 
             DB::commit();
 
-            if ($p == $p){
-                return response()->json(array('msg' => 'Servidor já pussui cadastrado.'));
-            }
+            // if ($p == $p){
+            //     return response()->json(array('msg' => 'Servidor já pussui cadastrado.'));
+            // }
 
             return response()->json(array('msg' => 'Servidor cadastrado com sucesso.'));
         } catch (\Exception $e) {
