@@ -1,7 +1,7 @@
 @extends('layout.main')
 @section('conteudo')
 <section class="container-fluid">
-    <form id="form" class="form-horizontal" method="POST" action="{{url('equipamento/store')}}" onsubmit="oController.salvar(e)">
+    <form id="form" class="form-horizontal" method="get" action="{{url('equipamento/store')}}" onsubmit="oController.salvar(e)">
         <h3>Novo Equipamento</h3>
         <div class="panel panel-default">
             <div class="panel-body col-md-offset-2">

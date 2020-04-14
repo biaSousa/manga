@@ -4,7 +4,7 @@ class ServidorController {
         this._form       = document.getElementById('form');
         this._matricula  = document.getElementById('matricula');
         this._cpf        = document.getElementById('cpf');
-        this._nome       = document.getElementById('nome');
+        this._servidor   = document.getElementById('servidor');
         this._email      = document.getElementById('email');
         this._data_nasc  = document.getElementById('data_nasc');
         this._data_entra = document.getElementById('data_entra');
@@ -20,17 +20,19 @@ class ServidorController {
 
         pesquisar(e) {
             e.preventDefault();
-            oTable.draw();
+            this._table.draw();
+            // e.preventDefault();
+            // oTable.odraw();
         }
     
         criar(e) { 
-            window.location = `${e.dataset.url}/admin/perfil/novo/`;
+            window.location = `${e.dataset.url}/servidor/novo/`;
         }
     
         editar(e) {
             let linha = oTable.rows('.selected').data()[0];
             if (linha !== null) {
-                window.location = `${e.dataset.url}/admin/perfil/editar/${linha.id}`;
+                window.location = `${e.dataset.url}/servidor/edita/${linha.id}`;
             }
             else
                 alert('Selecione um item');

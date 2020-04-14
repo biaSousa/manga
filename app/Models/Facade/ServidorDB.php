@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Models\Facade;
+
 use App\Models\Paginacao;
 use App\Models\Entity\Cargo;
 use App\Models\Entity\Setor;
@@ -60,7 +61,7 @@ public static function grid(\stdClass $q): Builder
         return $db;
     }
 
-    public static function gridServidor(\stdClass $p): Builder
+    public static function gridServidor(\stdClass $p) 
     {
         $db = DB::table('servidor as se')
             ->join('unidade as u', 'u.id', '=', 'se.fk_unidade')
@@ -72,36 +73,36 @@ public static function grid(\stdClass $q): Builder
                 'se.cpf',
                 'se.matricula',
                 'se.nome as servidor',
-                'c.nome as cargo',
-                's.nome as setor',
                 'u.nome as unidade',
+                's.nome as setor',
+                'c.nome as cargo',
             ]);
 
         if (isset($p->servidor)) {
             $db->whereRaw("se.servidor ilike '%$p->servidor%'");
         }
 
-        if (isset($p->matricula)) {
-            $db->where('se.matricula', $p->matricula);
-        }
-
-        if (isset($p->cpf)) {
-            $db->where('se.cpf', $p->cpf);
-        }
-
         if (isset($p->unidade)) {
             $db->where('se.fk_unidade', $p->unidade);
         }
-
+        
         if(isset($p->setor)) {
             $db->where('se.fk_setor', $p->setor);
+        }
+        
+        if (isset($p->cpf)) {
+            $db->where('se.cpf', $p->cpf);
+        }
+        
+        if (isset($p->matricula)) {
+            $db->where('se.matricula', $p->matricula);
         }
 
         if(isset($p->cargo)) {
             $db->where('se.fk_cargo', $p->cargo);
         } 
 
-        // $abia = Paginacao::dataTables($db);
+        $abia = Paginacao::dataTables($db);
         // echo "<pre>";
         // var_dump($abia);
         // echo "</pre>";

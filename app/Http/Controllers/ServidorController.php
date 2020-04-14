@@ -14,7 +14,7 @@ use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 class ServidorController extends Controller
 {
-    //from bono
+    //FROM BONO
     public function index()
     {
         $situacoes = PlantaoSituacao::orderBy('nome')->get();
@@ -39,24 +39,28 @@ class ServidorController extends Controller
         return view('plantao.index', compact('situacoes', 'unidades_diretores',
             'unidadeUsuarioLogado', 'situacaoPadrao'));
     }
-    //from bono
+    //FROM BONO
     public function grid()
     {
         $p = (object)request()->all();
         return Paginacao::dataTables(PlantaoRegras::grid($p), true);
     }
-
+    
     //tela de pesquisa futura (*) (*) 
     public function servidor()
     { 
-        return view('servidor.index');
-    }
+        $unidade = EquipamentoDB::getUnidade();
 
-    //grid de pesquisa (*) (*)
+        return view('servidor.index', compact('unidade'));
+    }
+    
+    //grid de pesquisa futura (*) (*)
     public function gridServidor()
     {
         $p = (object)request()->all();
-        return Paginacao::dataTables(ServidorDB::gridServidor($p), true);
+        // dd($p);
+        return Paginacao::dataTables(ServidorDB::gridServidor($p));
+        // dd(Paginacao::dataTables(ServidorDB::gridServidor($p), true));
     }
 
     //tela de cadastro de novo servidor

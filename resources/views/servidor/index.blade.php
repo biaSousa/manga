@@ -26,12 +26,17 @@
                             <input type="text" id="cpf" name="cpf" class="form-control">
                         </div>
                         <div class="col-md-3 mr-5">
-                            <label for="nome">Nome</label>
-                            <input type="text" id="nome" name="nome" class="form-control">
+                            <label for="servidor">Servidor</label>
+                            <input type="text" id="servidor" name="servidor" class="form-control">
                         </div>
                         <div class="col-md-3 mr-5">
                             <label for="unidade">Unidade</label>
-                            <input type="text" id="unidade" name="unidade" class="form-control">
+                            <select name="unidade" id="unidade" class="form-control">
+                                <option value="">Selecione...</option>
+                                @foreach($unidade as $p)
+                                <option value="{{$p->id}}">{{$p->nome}}</option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
                 </div>
@@ -91,7 +96,7 @@
 @endsection
 @section('scripts')
 <script src="{{asset('js/jquery.min.js')}}"></script>
-@include('layout.datatables', ['carregamento_inicial' => true, 'colunas' => ['nome', 'unidade', 'setor', 'cpf', 'matricula', 'cargo']])
+@include('layout.datatables', ['carregamento_inicial' => true, 'colunas' => ['id', 'nome', 'unidade', 'setor', 'cpf', 'matricula', 'cargo']])
 <script src="{{asset('js/app/models/Ajax.js')}}"></script>
 <script src="{{asset('js/vanillaTextMask.js') }}"></script>
 <script src="{{asset('js/app/models/ListaErrors.js') }}"></script>
